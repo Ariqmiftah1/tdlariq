@@ -90,81 +90,84 @@ export default function TodoList() {
       const docRef = await addDoc(collection(db, 'tasks'), newTask);
       setTasks([...tasks, { id: docRef.id, ...newTask }]);
     }
-};
+  };
 
-const toggleTask = async (id: string): Promise<void> => {
-  const updatedTasks = tasks.map((task) =>
-    task.id === id ? { ...task, completed: !task.completed } : task
-  );
-  setTasks(updatedTasks);
-  const taskRef = doc(db, 'tasks', id);
-  await updateDoc(taskRef, {
-    completed: updatedTasks.find((task) => task.id === id)?.completed,
-  });
-};
+  const toggleTask = async (id: string): Promise<void> => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+    const taskRef = doc(db, 'tasks', id);
+    await updateDoc(taskRef, {
+      completed: updatedTasks.find((task) => task.id === id)?.completed,
+    });
+  };
 
-const deleteTask = async (id: string): Promise<void> => {
-  await deleteDoc(doc(db, 'tasks', id));
-  setTasks(tasks.filter((task) => task.id !== id));
-};
+  const deleteTask = async (id: string): Promise<void> => {
+    await deleteDoc(doc(db, 'tasks', id));
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
 
-return (
-  <><div className="max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded-lg">
-        <h1 className="text-2xl text-emerald-500 font-bold mb-4">To-Do List</h1>
-        <div className="flex justify-center mb-4">
-            <button
-                onClick={addTask}
-                className="bg-slate-500 text-white px-4 py-2 rounded"
-            >
-                Tambah Tugas
-            </button>
-        </div>
-    </div><ul>
-            <AnimatePresence>
-                {tasks.map((task) => {
-                    const timeLeft = calculateTimeRemaining(task.deadline);
-                    const isExpired = timeLeft === 'Waktu habis!';
-                    const taskColor = task.completed
-                        ? 'bg-green-200'
-                        : isExpired
-                            ? 'bg-red-200'
-                            : 'bg-yellow-200';
+  return (
+    <div className="max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded-lg">
+      <h1 className="text-2xl text-emerald-500 font-bold mb-4">To-Do List</h1>
+      <div className="flex justify-center mb-4">
+        <button
+          onClick={addTask}
+          className="bg-slate-500 text-white px-4 py-2 rounded"
+        >
+          Tambah Tugas
+        </button>
+      </div>
+      <ul>
+        <AnimatePresence>
+          {tasks.map((task) => {
+            const timeLeft = calculateTimeRemaining(task.deadline);
+            const isExpired = timeLeft === 'Waktu habis!';
+            const taskColor = task.completed
+              ? 'bg-green-200'
+              : isExpired
+              ? 'bg-red-200'
+              : 'bg-yellow-200';
 
-                    return (
-                        <motion.li
-                            key={task.id}
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className={`flex flex-col justify-between p-2 border-b rounded-lg ${taskColor}`}
-                        >
-                            <div className="flex justify-between items-center">
-                                <span
-                                    onClick={() => toggleTask(task.id)}
-                                    className={`cursor-pointer transition-500 ${task.completed
-                                            ? 'line-through text-gray-500'
-                                            : 'font-semibold text-gray-700'}`}
-                                >
-                                    {task.text}
-                                </span>
-                                <button
-                                    onClick={() => deleteTask(task.id)}
-                                    className="text-white p-1 rounded bg-red-600 hover:bg-red-800"
-                                >
-                                    Hapus
-                                </button>
-                            </div>
-                            <p className="text-sm text-gray-700">
-                                Deadline: {new Date(task.deadline).toLocaleString()}
-                            </p>
-                            <p className="text-xs font-semibold text-gray-700">
-                                ⏳ {timeRemaining[task.id] || 'Menghitung...'}
-                            </p>
-                        </motion.li>
-                    );
-                })}
-            </AnimatePresence>
-        </ul></>
+            return (
+              <motion.li
+                key={task.id}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className={`flex flex-col justify-between p-2 border-b rounded-lg ${taskColor}`}
+              >
+                <div className="flex justify-between items-center">
+                  <span
+                    onClick={() => toggleTask(task.id)}
+                    className={`cursor-pointer transition-500 ${
+                      task.completed
+                        ? 'line-through text-gray-500'
+                        : 'font-semibold text-gray-700'
+                    }`}
+                  >
+                    {task.text}
+                  </span>
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    className="text-white p-1 rounded bg-red-600 hover:bg-red-800"
+                  >
+                    Hapus
+                  </button>
+                </div>
+                <p className="text-sm text-gray-700">
+                  Deadline: {new Date(task.deadline).toLocaleString()}
+                </p>
+                <p className="text-xs font-semibold text-gray-700">
+                  ⏳ {timeRemaining[task.id] || 'Menghitung...'}
+                </p>
+              </motion.li>
+            );
+          })}
+        </AnimatePresence>
+      </ul>
+    </div>
   );
 }
