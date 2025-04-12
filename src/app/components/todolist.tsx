@@ -12,6 +12,9 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
+// Tambahkan link Google Fonts di elemen head HTML:
+// <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
 type Task = {
   id: string;
   text: string;
@@ -36,32 +39,6 @@ export default function TodoList() {
     };
     fetchTasks();
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newTimeRemaining: { [key: string]: string } = {};
-      tasks.forEach((task) => {
-        newTimeRemaining[task.id] = calculateTimeRemaining(task.deadline);
-      });
-      setTimeRemaining(newTimeRemaining);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [tasks]);
-
-  const calculateTimeRemaining = (deadline: string): string => {
-    const deadlineTime = new Date(deadline).getTime();
-    const now = new Date().getTime();
-    const difference = deadlineTime - now;
-
-    if (difference <= 0) return 'Waktu habis!';
-
-    const hours = Math.floor(difference / (1000 * 60 * 60));
-    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-    return `${hours}j ${minutes}m ${seconds}d`;
-  };
 
   const addTask = async (): Promise<void> => {
     const { value: formValues } = await Swal.fire({
@@ -107,39 +84,41 @@ export default function TodoList() {
     await deleteDoc(doc(db, 'tasks', id));
     setTasks(tasks.filter((task) => task.id !== id));
   };
+
   const editTask = async (id: string, currentText: string, currentDeadline: string): Promise<void> => {
-  const { value: formValues } = await Swal.fire({
-    title: 'Edit Tugas',
-    html:
-      `<input id="swal-input1" class="swal2-input" value="${currentText}" placeholder="Nama tugas">` +
-      `<input id="swal-input2" type="datetime-local" class="swal2-input" value="${new Date(currentDeadline).toISOString().slice(0, 16)}">`,
-    focusConfirm: false,
-    showCancelButton: true,
-    confirmButtonText: 'Simpan',
-    cancelButtonText: 'Batal',
-    preConfirm: () => {
-      return [
-        (document.getElementById('swal-input1') as HTMLInputElement)?.value,
-        (document.getElementById('swal-input2') as HTMLInputElement)?.value,
-      ];
-    },
-  });
+    const { value: formValues } = await Swal.fire({
+      title: 'Edit Tugas',
+      html:
+        `<input id="swal-input1" class="swal2-input" value="${currentText}" placeholder="Nama tugas">` +
+        `<input id="swal-input2" type="datetime-local" class="swal2-input" value="${new Date(currentDeadline).toISOString().slice(0, 16)}">`,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Simpan',
+      cancelButtonText: 'Batal',
+      preConfirm: () => {
+        return [
+          (document.getElementById('swal-input1') as HTMLInputElement)?.value,
+          (document.getElementById('swal-input2') as HTMLInputElement)?.value,
+        ];
+      },
+    });
 
-  if (formValues && (formValues[0] !== currentText || formValues[1] !== currentDeadline)) {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, text: formValues[0], deadline: formValues[1] } : task
-    );
-    setTasks(updatedTasks);
+    if (formValues && (formValues[0] !== currentText || formValues[1] !== currentDeadline)) {
+      const updatedTasks = tasks.map((task) =>
+        task.id === id ? { ...task, text: formValues[0], deadline: formValues[1] } : task
+      );
+      setTasks(updatedTasks);
 
-    const taskRef = doc(db, 'tasks', id);
-    await updateDoc(taskRef, { text: formValues[0], deadline: formValues[1] });
-  }
-};
-  
+      const taskRef = doc(db, 'tasks', id);
+      await updateDoc(taskRef, { text: formValues[0], deadline: formValues[1] });
+    }
+  };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl text-black font-bold mb-4 flex justify-center">TO DO LIST</h1>
+      <h1 className="text-2xl text-black font-bold mb-4 flex justify-center" style={{ fontFamily: 'Poppins, sans-serif' }}>
+        TO DO LIST
+      </h1>
       <div className="flex justify-center mb-4">
         <button
           onClick={addTask}
@@ -168,31 +147,31 @@ export default function TodoList() {
                 transition={{ duration: 0.3 }}
                 className={`flex flex-col justify-between p-2 border-b rounded-lg ${taskColor}`}
               >
-  <div className="flex justify-between items-center space-x-2">
-  <span
-    onClick={() => toggleTask(task.id)}
-    className={`flex-1 cursor-pointer transition-500 ${
-      task.completed
-        ? 'line-through text-gray-500'
-        : 'font-semibold text-gray-700'
-    }`}
-  >
-    {task.text}
-  </span>
-  <button
-  onClick={() => editTask(task.id, task.text, task.deadline)}
-  className="text-white p-1 rounded bg-blue-600 hover:bg-blue-800"
->
-  Edit
-</button>
-  <button
-    onClick={() => deleteTask(task.id)}
-    className="text-white p-1 rounded bg-red-600 hover:bg-red-800"
-  >
-    Hapus
-  </button>
-</div>
-
+                <div className="flex justify-between items-center space-x-2">
+                  <span
+                    onClick={() => toggleTask(task.id)}
+                    className={`flex-1 cursor-pointer transition-500 ${
+                      task.completed
+                        ? 'line-through text-gray-500'
+                        : 'font-semibold text-gray-700'
+                    }`}
+                    style={{ fontFamily: 'Poppins, sans-serif', fontSize: '16px' }}
+                  >
+                    {task.text}
+                  </span>
+                  <button
+                    onClick={() => editTask(task.id, task.text, task.deadline)}
+                    className="text-white p-2 rounded bg-blue-600 hover:bg-blue-800"
+                  >
+                    <i className="fas fa-edit"></i>
+                  </button>
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    className="text-white p-2 rounded bg-red-600 hover:bg-red-800"
+                  >
+                    <i className="fas fa-trash-alt"></i>
+                  </button>
+                </div>
                 <p className="text-sm text-gray-700">
                   Deadline: {new Date(task.deadline).toLocaleString()}
                 </p>
