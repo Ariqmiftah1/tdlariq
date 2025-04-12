@@ -37,6 +37,32 @@ export default function TodoList() {
     fetchTasks();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newTimeRemaining: { [key: string]: string } = {};
+      tasks.forEach((task) => {
+        newTimeRemaining[task.id] = calculateTimeRemaining(task.deadline);
+      });
+      setTimeRemaining(newTimeRemaining);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [tasks]);
+
+  const calculateTimeRemaining = (deadline: string): string => {
+    const deadlineTime = new Date(deadline).getTime();
+    const now = new Date().getTime();
+    const difference = deadlineTime - now;
+
+    if (difference <= 0) return 'Waktu habis!';
+
+    const hours = Math.floor(difference / (1000 * 60 * 60));
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+    return `${hours}j ${minutes}m ${seconds}d`;
+  };
+
   const addTask = async (): Promise<void> => {
     const { value: formValues } = await Swal.fire({
       title: 'Tambahkan tugas baru',
@@ -82,6 +108,35 @@ export default function TodoList() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const editTask = async (id: string, currentText: string, currentDeadline: string): Promise<void> => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Edit Tugas',
+      html:
+        `<input id="swal-input1" class="swal2-input" value="${currentText}" placeholder="Nama tugas">` +
+        `<input id="swal-input2" type="datetime-local" class="swal2-input" value="${new Date(currentDeadline).toISOString().slice(0, 16)}">`,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Simpan',
+      cancelButtonText: 'Batal',
+      preConfirm: () => {
+        return [
+          (document.getElementById('swal-input1') as HTMLInputElement)?.value,
+          (document.getElementById('swal-input2') as HTMLInputElement)?.value,
+        ];
+      },
+    });
+
+    if (formValues && (formValues[0] !== currentText || formValues[1] !== currentDeadline)) {
+      const updatedTasks = tasks.map((task) =>
+        task.id === id ? { ...task, text: formValues[0], deadline: formValues[1] } : task
+      );
+      setTasks(updatedTasks);
+
+      const taskRef = doc(db, 'tasks', id);
+      await updateDoc(taskRef, { text: formValues[0], deadline: formValues[1] });
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded-lg">
       <h1 className="text-2xl text-black font-bold mb-4 flex justify-center">TO DO LIST</h1>
@@ -125,6 +180,12 @@ export default function TodoList() {
                     {task.text}
                   </span>
                   <button
+                    onClick={() => editTask(task.id, task.text, task.deadline)}
+                    className="text-white p-1 rounded bg-blue-600 hover:bg-blue-800"
+                  >
+                    Edit
+                  </button>
+                  <button
                     onClick={() => deleteTask(task.id)}
                     className="text-white p-1 rounded bg-red-600 hover:bg-red-800"
                   >
@@ -144,3 +205,4 @@ export default function TodoList() {
       </ul>
     </div>
   );
+}
