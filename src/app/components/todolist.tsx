@@ -12,12 +12,6 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
-// Tambahkan font Google Fonts
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap"
-/>;
-
 type Task = {
   id: string;
   text: string;
@@ -160,7 +154,7 @@ export default function TodoList() {
       fontFamily: "'Caveat', cursive",
     }}
   >
-    ✏️ My Doodle TO DO LIST
+    TO DO LIST
   </h1>
   <div className="flex justify-center mb-6">
     <button
