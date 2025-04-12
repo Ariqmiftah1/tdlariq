@@ -12,6 +12,12 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
+// Tambahkan font Google Fonts
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap"
+/>;
+
 type Task = {
   id: string;
   text: string;
@@ -138,12 +144,34 @@ export default function TodoList() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl text-black font-bold mb-4 flex justify-center">TO DO LIST</h1>
-      <div className="flex justify-center mb-4">
+    <div
+      className="max-w-md mx-auto mt-10 p-6 rounded-lg"
+      style={{
+        backgroundColor: '#E8F5E9', // Warna hijau lembut untuk latar belakang
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+        fontFamily: 'Roboto, sans-serif',
+      }}
+    >
+      <h1
+        className="text-3xl font-bold mb-6 text-center"
+        style={{
+          color: '#2E7D32', // Hijau tua untuk judul
+          fontFamily: 'Playfair Display, serif',
+        }}
+      >
+        🌍 TO DO LIST
+      </h1>
+      <div className="flex justify-center mb-6">
         <button
           onClick={addTask}
-          className="bg-green-700 hover:bg-green-900 text-white px-4 py-2 rounded"
+          className="px-6 py-3 rounded-full"
+          style={{
+            backgroundColor: '#43A047', // Hijau cerah untuk tombol
+            color: '#FFFFFF',
+            fontFamily: 'Roboto, sans-serif',
+            fontWeight: 'bold',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          }}
         >
           Tambah Tugas
         </button>
@@ -154,10 +182,10 @@ export default function TodoList() {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
             const taskColor = task.completed
-              ? 'bg-green-200'
+              ? '#A5D6A7' // Hijau terang untuk tugas selesai
               : isExpired
-              ? 'bg-red-200'
-              : 'bg-yellow-200';
+              ? '#EF9A9A' // Merah muda untuk tugas yang habis waktu
+              : '#FFF59D'; // Kuning pucat untuk tugas aktif
 
             return (
               <motion.li
@@ -166,9 +194,16 @@ export default function TodoList() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className={`flex flex-col justify-between p-2 border-b rounded-lg ${taskColor}`}
+                style={{
+                  backgroundColor: taskColor,
+                  borderRadius: '16px',
+                  padding: '16px',
+                  marginBottom: '12px',
+                  border: '1px solid #C8E6C9',
+                  fontFamily: 'Roboto, sans-serif',
+                }}
               >
-                <div className="flex justify-between items-center space-x-2">
+                <div className="flex justify-between items-center">
                   <span
                     onClick={() => toggleTask(task.id)}
                     className={`flex-1 cursor-pointer transition-500 ${
@@ -176,26 +211,38 @@ export default function TodoList() {
                         ? 'line-through text-gray-500'
                         : 'font-semibold text-gray-700'
                     }`}
+                    style={{
+                      fontSize: '18px',
+                    }}
                   >
                     {task.text}
                   </span>
                   <button
                     onClick={() => editTask(task.id, task.text, task.deadline)}
-                    className="text-white p-1 rounded bg-blue-600 hover:bg-blue-800"
+                    className="p-2 rounded-full"
+                    style={{
+                      backgroundColor: '#1E88E5', // Biru untuk tombol edit
+                      color: '#FFFFFF',
+                      marginRight: '8px',
+                    }}
                   >
-                    Edit
+                    ✏️
                   </button>
                   <button
                     onClick={() => deleteTask(task.id)}
-                    className="text-white p-1 rounded bg-red-600 hover:bg-red-800"
+                    className="p-2 rounded-full"
+                    style={{
+                      backgroundColor: '#E53935', // Merah untuk tombol hapus
+                      color: '#FFFFFF',
+                    }}
                   >
-                    Hapus
+                    🗑️
                   </button>
                 </div>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm mt-2" style={{ color: '#2E7D32' }}>
                   Deadline: {new Date(task.deadline).toLocaleString()}
                 </p>
-                <p className="text-xs font-semibold text-gray-700">
+                <p className="text-xs font-semibold" style={{ color: '#2E7D32' }}>
                   ⏳ {timeRemaining[task.id] || 'Menghitung...'}
                 </p>
               </motion.li>
