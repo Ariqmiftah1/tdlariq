@@ -138,114 +138,71 @@ export default function TodoList() {
   };
 
   return (
-   <div
-  className="max-w-md mx-auto mt-10 p-6 rounded-lg"
-  style={{
-    backgroundColor: '#FFFBEA', // Warna krem untuk latar belakang
-    boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
-    fontFamily: "'Caveat', cursive", // Font doodle
-    border: '2px dashed #FFB74D', // Border gaya doodle
-  }}
->
-  <h1
-    className="text-3xl font-bold mb-6 text-center"
-    style={{
-      color: '#FF7043', // Orange cerah
-      fontFamily: "'Caveat', cursive",
-    }}
-  >
-    TO DO LIST
-  </h1>
-  <div className="flex justify-center mb-6">
-    <button
-      onClick={addTask}
-      className="px-6 py-3 rounded-full"
-      style={{
-        background: 'linear-gradient(145deg, #FFCC80, #FFB74D)', // Gradien untuk kesan 3D
-        color: '#FFFFFF',
-        fontFamily: "'Caveat', cursive",
-        fontWeight: 'bold',
-        boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)',
-        border: '2px solid #FF7043',
-      }}
-    >
-      Tambah Tugas
-    </button>
-  </div>
-  <ul>
-    <AnimatePresence>
-      {tasks.map((task) => {
-        const timeLeft = calculateTimeRemaining(task.deadline);
-        const isExpired = timeLeft === 'Waktu habis!';
-        const taskColor = task.completed
-          ? '#D7FFD9' // Hijau pastel untuk tugas selesai
-          : isExpired
-          ? '#FFD6D6' // Pink pastel untuk tugas habis waktu
-          : '#FFF9C4'; // Kuning pastel untuk tugas aktif
+    <div className="max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded-lg">
+      <h1 className="text-2xl text-black font-bold mb-4 flex justify-center">TO DO LIST</h1>
+      <div className="flex justify-center mb-4">
+        <button
+          onClick={addTask}
+          className="bg-green-700 hover:bg-green-900 text-white px-4 py-2 rounded"
+        >
+          Tambah Tugas
+        </button>
+      </div>
+      <ul>
+        <AnimatePresence>
+          {tasks.map((task) => {
+            const timeLeft = calculateTimeRemaining(task.deadline);
+            const isExpired = timeLeft === 'Waktu habis!';
+            const taskColor = task.completed
+              ? 'bg-green-200'
+              : isExpired
+              ? 'bg-red-200'
+              : 'bg-yellow-200';
 
-        return (
-          <motion.li
-            key={task.id}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-            style={{
-              backgroundColor: taskColor,
-              borderRadius: '10px',
-              padding: '16px',
-              marginBottom: '12px',
-              border: '2px dashed #FFB74D', // Border doodle
-              fontFamily: "'Caveat', cursive",
-            }}
-          >
-            <div className="flex justify-between items-center">
-              <span
-                onClick={() => toggleTask(task.id)}
-                className={`flex-1 cursor-pointer transition-500 ${
-                  task.completed
-                    ? 'line-through text-gray-500'
-                    : 'font-semibold text-gray-700'
-                }`}
-                style={{
-                  fontSize: '18px',
-                }}
+            return (
+              <motion.li
+                key={task.id}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className={`flex flex-col justify-between p-2 border-b rounded-lg ${taskColor}`}
               >
-                {task.text}
-              </span>
-              <button
-                onClick={() => editTask(task.id, task.text, task.deadline)}
-                className="p-2 rounded-full"
-                style={{
-                  background: 'linear-gradient(145deg, #90CAF9, #64B5F6)', // Gradien biru
-                  color: '#FFFFFF',
-                  marginRight: '8px',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                ✏️
-              </button>
-              <button
-                onClick={() => deleteTask(task.id)}
-                className="p-2 rounded-full"
-                style={{
-                  background: 'linear-gradient(145deg, #EF5350, #E53935)', // Gradien merah
-                  color: '#FFFFFF',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                🗑️
-              </button>
-            </div>
-            <p className="text-sm mt-2" style={{ color: '#FF7043' }}>
-              Deadline: {new Date(task.deadline).toLocaleString()}
-            </p>
-            <p className="text-xs font-semibold" style={{ color: '#FF7043' }}>
-              ⏳ {timeRemaining[task.id] || 'Menghitung...'}
-            </p>
-          </motion.li>
-        );
-      })}
-    </AnimatePresence>
-  </ul>
-</div>
+                <div className="flex justify-between items-center space-x-2">
+                  <span
+                    onClick={() => toggleTask(task.id)}
+                    className={`flex-1 cursor-pointer transition-500 ${
+                      task.completed
+                        ? 'line-through text-gray-500'
+                        : 'font-semibold text-gray-700'
+                    }`}
+                  >
+                    {task.text}
+                  </span>
+                  <button
+                    onClick={() => editTask(task.id, task.text, task.deadline)}
+                    className="text-white p-1 rounded bg-blue-600 hover:bg-blue-800"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    className="text-white p-1 rounded bg-red-600 hover:bg-red-800"
+                  >
+                    Hapus
+                  </button>
+                </div>
+                <p className="text-sm text-gray-700">
+                  Deadline: {new Date(task.deadline).toLocaleString()}
+                </p>
+                <p className="text-xs font-semibold text-gray-700">
+                  ⏳ {timeRemaining[task.id] || 'Menghitung...'}
+                </p>
+              </motion.li>
+            );
+          })}
+        </AnimatePresence>
+      </ul>
+    </div>
+  );
+}
