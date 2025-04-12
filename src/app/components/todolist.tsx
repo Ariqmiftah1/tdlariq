@@ -144,112 +144,114 @@ export default function TodoList() {
   };
 
   return (
-    <div
-      className="max-w-md mx-auto mt-10 p-6 rounded-lg"
+   <div
+  className="max-w-md mx-auto mt-10 p-6 rounded-lg"
+  style={{
+    backgroundColor: '#FFFBEA', // Warna krem untuk latar belakang
+    boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
+    fontFamily: "'Caveat', cursive", // Font doodle
+    border: '2px dashed #FFB74D', // Border gaya doodle
+  }}
+>
+  <h1
+    className="text-3xl font-bold mb-6 text-center"
+    style={{
+      color: '#FF7043', // Orange cerah
+      fontFamily: "'Caveat', cursive",
+    }}
+  >
+    ✏️ My Doodle TO DO LIST
+  </h1>
+  <div className="flex justify-center mb-6">
+    <button
+      onClick={addTask}
+      className="px-6 py-3 rounded-full"
       style={{
-        backgroundColor: '#E8F5E9', // Warna hijau lembut untuk latar belakang
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-        fontFamily: 'Roboto, sans-serif',
+        background: 'linear-gradient(145deg, #FFCC80, #FFB74D)', // Gradien untuk kesan 3D
+        color: '#FFFFFF',
+        fontFamily: "'Caveat', cursive",
+        fontWeight: 'bold',
+        boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)',
+        border: '2px solid #FF7043',
       }}
     >
-      <h1
-        className="text-3xl font-bold mb-6 text-center"
-        style={{
-          color: '#2E7D32', // Hijau tua untuk judul
-          fontFamily: 'Playfair Display, serif',
-        }}
-      >
-        🌍 TO DO LIST
-      </h1>
-      <div className="flex justify-center mb-6">
-        <button
-          onClick={addTask}
-          className="px-6 py-3 rounded-full"
-          style={{
-            backgroundColor: '#43A047', // Hijau cerah untuk tombol
-            color: '#FFFFFF',
-            fontFamily: 'Roboto, sans-serif',
-            fontWeight: 'bold',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          Tambah Tugas
-        </button>
-      </div>
-      <ul>
-        <AnimatePresence>
-          {tasks.map((task) => {
-            const timeLeft = calculateTimeRemaining(task.deadline);
-            const isExpired = timeLeft === 'Waktu habis!';
-            const taskColor = task.completed
-              ? '#A5D6A7' // Hijau terang untuk tugas selesai
-              : isExpired
-              ? '#EF9A9A' // Merah muda untuk tugas yang habis waktu
-              : '#FFF59D'; // Kuning pucat untuk tugas aktif
+      Tambah Tugas
+    </button>
+  </div>
+  <ul>
+    <AnimatePresence>
+      {tasks.map((task) => {
+        const timeLeft = calculateTimeRemaining(task.deadline);
+        const isExpired = timeLeft === 'Waktu habis!';
+        const taskColor = task.completed
+          ? '#D7FFD9' // Hijau pastel untuk tugas selesai
+          : isExpired
+          ? '#FFD6D6' // Pink pastel untuk tugas habis waktu
+          : '#FFF9C4'; // Kuning pastel untuk tugas aktif
 
-            return (
-              <motion.li
-                key={task.id}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
+        return (
+          <motion.li
+            key={task.id}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              backgroundColor: taskColor,
+              borderRadius: '10px',
+              padding: '16px',
+              marginBottom: '12px',
+              border: '2px dashed #FFB74D', // Border doodle
+              fontFamily: "'Caveat', cursive",
+            }}
+          >
+            <div className="flex justify-between items-center">
+              <span
+                onClick={() => toggleTask(task.id)}
+                className={`flex-1 cursor-pointer transition-500 ${
+                  task.completed
+                    ? 'line-through text-gray-500'
+                    : 'font-semibold text-gray-700'
+                }`}
                 style={{
-                  backgroundColor: taskColor,
-                  borderRadius: '16px',
-                  padding: '16px',
-                  marginBottom: '12px',
-                  border: '1px solid #C8E6C9',
-                  fontFamily: 'Roboto, sans-serif',
+                  fontSize: '18px',
                 }}
               >
-                <div className="flex justify-between items-center">
-                  <span
-                    onClick={() => toggleTask(task.id)}
-                    className={`flex-1 cursor-pointer transition-500 ${
-                      task.completed
-                        ? 'line-through text-gray-500'
-                        : 'font-semibold text-gray-700'
-                    }`}
-                    style={{
-                      fontSize: '18px',
-                    }}
-                  >
-                    {task.text}
-                  </span>
-                  <button
-                    onClick={() => editTask(task.id, task.text, task.deadline)}
-                    className="p-2 rounded-full"
-                    style={{
-                      backgroundColor: '#1E88E5', // Biru untuk tombol edit
-                      color: '#FFFFFF',
-                      marginRight: '8px',
-                    }}
-                  >
-                    ✏️
-                  </button>
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="p-2 rounded-full"
-                    style={{
-                      backgroundColor: '#E53935', // Merah untuk tombol hapus
-                      color: '#FFFFFF',
-                    }}
-                  >
-                    🗑️
-                  </button>
-                </div>
-                <p className="text-sm mt-2" style={{ color: '#2E7D32' }}>
-                  Deadline: {new Date(task.deadline).toLocaleString()}
-                </p>
-                <p className="text-xs font-semibold" style={{ color: '#2E7D32' }}>
-                  ⏳ {timeRemaining[task.id] || 'Menghitung...'}
-                </p>
-              </motion.li>
-            );
-          })}
-        </AnimatePresence>
-      </ul>
-    </div>
-  );
-}
+                {task.text}
+              </span>
+              <button
+                onClick={() => editTask(task.id, task.text, task.deadline)}
+                className="p-2 rounded-full"
+                style={{
+                  background: 'linear-gradient(145deg, #90CAF9, #64B5F6)', // Gradien biru
+                  color: '#FFFFFF',
+                  marginRight: '8px',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                ✏️
+              </button>
+              <button
+                onClick={() => deleteTask(task.id)}
+                className="p-2 rounded-full"
+                style={{
+                  background: 'linear-gradient(145deg, #EF5350, #E53935)', // Gradien merah
+                  color: '#FFFFFF',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                🗑️
+              </button>
+            </div>
+            <p className="text-sm mt-2" style={{ color: '#FF7043' }}>
+              Deadline: {new Date(task.deadline).toLocaleString()}
+            </p>
+            <p className="text-xs font-semibold" style={{ color: '#FF7043' }}>
+              ⏳ {timeRemaining[task.id] || 'Menghitung...'}
+            </p>
+          </motion.li>
+        );
+      })}
+    </AnimatePresence>
+  </ul>
+</div>
