@@ -107,26 +107,34 @@ export default function TodoList() {
     await deleteDoc(doc(db, 'tasks', id));
     setTasks(tasks.filter((task) => task.id !== id));
   };
-  const editTask = async (id: string, currentText: string): Promise<void> => {
-    const { value: newText } = await Swal.fire({
-      title: 'Edit Nama Tugas',
-      input: 'text',
-      inputValue: currentText,
-      showCancelButton: true,
-      confirmButtonText: 'Simpan',
-      cancelButtonText: 'Batal',
-    });
-  
-    if (newText && newText !== currentText) {
-      const updatedTasks = tasks.map((task) =>
-        task.id === id ? { ...task, text: newText } : task
-      );
-      setTasks(updatedTasks);
-  
-      const taskRef = doc(db, 'tasks', id);
-      await updateDoc(taskRef, { text: newText });
-    }
-  };
+  const editTask = async (id: string, currentText: string, currentDeadline: string): Promise<void> => {
+  const { value: formValues } = await Swal.fire({
+    title: 'Edit Tugas',
+    html:
+      `<input id="swal-input1" class="swal2-input" value="${currentText}" placeholder="Nama tugas">` +
+      `<input id="swal-input2" type="datetime-local" class="swal2-input" value="${new Date(currentDeadline).toISOString().slice(0, 16)}">`,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: 'Simpan',
+    cancelButtonText: 'Batal',
+    preConfirm: () => {
+      return [
+        (document.getElementById('swal-input1') as HTMLInputElement)?.value,
+        (document.getElementById('swal-input2') as HTMLInputElement)?.value,
+      ];
+    },
+  });
+
+  if (formValues && (formValues[0] !== currentText || formValues[1] !== currentDeadline)) {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, text: formValues[0], deadline: formValues[1] } : task
+    );
+    setTasks(updatedTasks);
+
+    const taskRef = doc(db, 'tasks', id);
+    await updateDoc(taskRef, { text: formValues[0], deadline: formValues[1] });
+  }
+};
   
 
   return (
@@ -172,11 +180,11 @@ export default function TodoList() {
     {task.text}
   </span>
   <button
-    onClick={() => editTask(task.id, task.text)}
-    className="text-white p-1 rounded bg-blue-600 hover:bg-blue-800"
-  >
-    Edit
-  </button>
+  onClick={() => editTask(task.id, task.text, task.deadline)}
+  className="text-white p-1 rounded bg-blue-600 hover:bg-blue-800"
+>
+  Edit
+</button>
   <button
     onClick={() => deleteTask(task.id)}
     className="text-white p-1 rounded bg-red-600 hover:bg-red-800"
