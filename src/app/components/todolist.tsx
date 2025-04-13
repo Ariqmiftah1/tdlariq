@@ -65,19 +65,22 @@ export default function TodoList() {
 
   const addTask = async (): Promise<void> => {
     const { value: formValues } = await Swal.fire({
-      title: 'Tambahkan Tugas Baru',
+      title: '<span style="color: #333333; font-weight: bold;">Tambahkan Tugas Baru</span>',
       html: `
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          <input id="swal-input1" class="swal2-input" placeholder="Nama tugas" style="padding: 10px; font-size: 1rem;"/>
-          <input id="swal-input2" type="datetime-local" class="swal2-input" style="padding: 10px; font-size: 1rem;"/>
+        <div style="display: flex; flex-direction: column; gap: 15px; background-color: #f4f4f8; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+          <input id="swal-input1" class="swal2-input" placeholder="Nama tugas" style="padding: 12px; font-size: 1rem; border: 1px solid #ddd; border-radius: 5px; background: #ffffff; color: #333333;"/>
+          <input id="swal-input2" type="datetime-local" class="swal2-input" style="padding: 12px; font-size: 1rem; border: 1px solid #ddd; border-radius: 5px; background: #ffffff; color: #333333;"/>
         </div>
       `,
       focusConfirm: false,
       showCancelButton: true,
-      confirmButtonText: '<span style="color: white;">Tambah</span>',
+      confirmButtonText: '<span style="font-weight: bold;">Tambah</span>',
       confirmButtonColor: '#4caf50', // Hijau untuk tombol konfirmasi
-      cancelButtonText: '<span style="color: white;">Batal</span>',
+      cancelButtonText: '<span style="font-weight: bold;">Batal</span>',
       cancelButtonColor: '#9e9e9e', // Abu-abu untuk tombol batal
+      customClass: {
+        popup: 'swal-custom-popup',
+      },
       preConfirm: () => {
         return [
           (document.getElementById('swal-input1') as HTMLInputElement)?.value,
@@ -97,15 +100,41 @@ export default function TodoList() {
     }
   };
 
-  const toggleTask = async (id: string): Promise<void> => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(updatedTasks);
-    const taskRef = doc(db, 'tasks', id);
-    await updateDoc(taskRef, {
-      completed: updatedTasks.find((task) => task.id === id)?.completed,
+  const editTask = async (id: string, currentText: string, currentDeadline: string): Promise<void> => {
+    const { value: formValues } = await Swal.fire({
+      title: '<span style="color: #333333; font-weight: bold;">Edit Tugas</span>',
+      html: `
+        <div style="display: flex; flex-direction: column; gap: 15px; background-color: #f4f4f8; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+          <input id="swal-input1" class="swal2-input" value="${currentText}" placeholder="Nama tugas" style="padding: 12px; font-size: 1rem; border: 1px solid #ddd; border-radius: 5px; background: #ffffff; color: #333333;"/>
+          <input id="swal-input2" type="datetime-local" class="swal2-input" value="${new Date(currentDeadline).toISOString().slice(0, 16)}" style="padding: 12px; font-size: 1rem; border: 1px solid #ddd; border-radius: 5px; background: #ffffff; color: #333333;"/>
+        </div>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: '<span style="font-weight: bold;">Simpan</span>',
+      confirmButtonColor: '#6c63ff', // Biru untuk tombol konfirmasi
+      cancelButtonText: '<span style="font-weight: bold;">Batal</span>',
+      cancelButtonColor: '#9e9e9e', // Abu-abu untuk tombol batal
+      customClass: {
+        popup: 'swal-custom-popup',
+      },
+      preConfirm: () => {
+        return [
+          (document.getElementById('swal-input1') as HTMLInputElement)?.value,
+          (document.getElementById('swal-input2') as HTMLInputElement)?.value,
+        ];
+      },
     });
+
+    if (formValues && (formValues[0] !== currentText || formValues[1] !== currentDeadline)) {
+      const updatedTasks = tasks.map((task) =>
+        task.id === id ? { ...task, text: formValues[0], deadline: formValues[1] } : task
+      );
+      setTasks(updatedTasks);
+
+      const taskRef = doc(db, 'tasks', id);
+      await updateDoc(taskRef, { text: formValues[0], deadline: formValues[1] });
+    }
   };
 
   const deleteTask = async (id: string): Promise<void> => {
