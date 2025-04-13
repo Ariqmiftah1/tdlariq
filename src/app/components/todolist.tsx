@@ -146,7 +146,7 @@ export default function TodoList() {
         borderRadius: '20px',
         backgroundColor: '#f4f4f8', // Latar belakang terang
         color: '#333333', // Teks lebih gelap untuk kontras
-        boxShadow: 'inset 5px 5px 5px 5px rgba(0, 0, 0, 0.5)', // Shadow untuk kesan jatuh
+        boxShadow: 'inset 5px rgba(0, 0, 0, 0.3)', // Shadow untuk kesan jatuh
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
