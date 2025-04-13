@@ -144,9 +144,9 @@ export default function TodoList() {
         margin: '40px auto',
         padding: '20px',
         borderRadius: '20px',
-        backgroundColor: '#1e1e2f',
-        color: '#ffffff',
-        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.5)', // Shadow untuk kesan jatuh
+        backgroundColor: '#f4f4f8', // Latar belakang terang
+        color: '#333333', // Teks lebih gelap untuk kontras
+        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
@@ -156,7 +156,7 @@ export default function TodoList() {
           fontSize: '2.5rem',
           fontWeight: 'bold',
           marginBottom: '20px',
-          color: '#8e97f2',
+          color: '#6c63ff', // Warna judul lembut
         }}
       >
         To-Do List (⁠⁠╹⁠▽⁠╹⁠⁠)
@@ -173,28 +173,28 @@ export default function TodoList() {
           onClick={addTask}
           style={{
             padding: '12px 24px',
-            borderRadius: '3px', // Persegi
-            background: 'linear-gradient(145deg, #4b5d67, #6c7983)',
-            color: '#ffffff',
+            borderRadius: '5px',
+            background: 'linear-gradient(145deg, #d9e4ff, #a3b9ff)', // Warna tombol terang
+            color: '#333333', // Warna teks gelap untuk kontras
             fontWeight: 'bold',
             cursor: 'pointer',
             border: 'none',
-            boxShadow: '0 8px 15px rgba(0, 0, 0, 0.5)',
+            boxShadow: '0 8px 15px rgba(0, 0, 0, 0.2)',
             transition: 'transform 0.2s',
           }}
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-         + Tambah Tugas
+          + Tambah Tugas
         </button>
         <span
           style={{
-            padding: '10px',
-            borderRadius: '3px', // Persegi
-            background: '#6c7983',
-            color: '#ffffff',
+            padding: '5px',
+            borderRadius: '3px',
+            background: '#e6e6fa', // Latar belakang terang
+            color: '#333333', // Teks gelap
             fontWeight: 'bold',
-            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)',
+            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.1)',
           }}
         >
           {tasks.length}
@@ -206,10 +206,10 @@ export default function TodoList() {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
             const taskColor = task.completed
-              ? '#2d6a4f' // Hijau gelap untuk tugas selesai
+              ? '#c8e6c9' // Hijau terang untuk tugas selesai
               : isExpired
-              ? '#9d0208' // Merah gelap untuk tugas melebihi deadline
-              : '#6c7983';
+              ? '#ffcdd2' // Merah terang untuk tugas melebihi deadline
+              : '#d1c4e9'; // Ungu terang untuk tugas dalam tenggat waktu
 
             return (
               <motion.li
@@ -220,11 +220,11 @@ export default function TodoList() {
                 transition={{ duration: 0.3 }}
                 style={{
                   backgroundColor: taskColor,
-                  borderRadius: '15px',
-                  padding: '20px',
+                  borderRadius: '10px',
+                  padding: '15px',
                   marginBottom: '15px',
-                  color: '#ffffff',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)', // Shadow untuk kesan jatuh
+                  color: '#333333', // Teks gelap
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
                 }}
               >
                 <div
@@ -240,7 +240,7 @@ export default function TodoList() {
                       flex: 1,
                       fontSize: '1rem',
                       fontWeight: '500',
-                      color: task.completed ? '#aaaaaa' : '#ffffff',
+                      color: task.completed ? '#555555' : '#333333',
                       textDecoration: task.completed ? 'line-through' : 'none',
                       cursor: 'pointer',
                       marginRight: '10px',
@@ -249,9 +249,9 @@ export default function TodoList() {
                     {task.text}
                   </span>
                 </div>
-                <p style={{ fontSize: '0.9rem', color: '#aaaaaa', display: 'flex', justifyContent: 'space-between' }}>
+                <p style={{ fontSize: '0.9rem', color: '#555555', display: 'flex', justifyContent: 'space-between' }}>
                   <span>Deadline: {new Date(task.deadline).toLocaleString()}</span>
-                  <span style={{ color: '#8e97f2', fontWeight: 'bold' }}>
+                  <span style={{ color: '#6c63ff', fontWeight: 'bold' }}>
                     ⏳ {timeRemaining[task.id] || 'Menghitung...'}
                   </span>
                 </p>
@@ -266,13 +266,13 @@ export default function TodoList() {
                   <button
                     onClick={() => editTask(task.id, task.text, task.deadline)}
                     style={{
-                      padding: '5px',
-                      borderRadius: '3px', // Persegi
-                      background: 'linear-gradient(145deg, #8e97f2, #6c7983)',
-                      color: '#ffffff',
+                      padding: '10px',
+                      borderRadius: '5px',
+                      background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)', // Hijau terang untuk edit
+                      color: '#333333',
                       border: 'none',
                       cursor: 'pointer',
-                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
+                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.2)',
                     }}
                   >
                     Edit
@@ -280,13 +280,13 @@ export default function TodoList() {
                   <button
                     onClick={() => deleteTask(task.id)}
                     style={{
-                      padding: '5px',
-                      borderRadius: '3px', // Persegi
-                      background: 'linear-gradient(145deg, #f25f5c, #d64045)',
-                      color: '#ffffff',
+                      padding: '10px',
+                      borderRadius: '5px',
+                      background: 'linear-gradient(145deg, #ffebee, #ef9a9a)', // Merah terang untuk hapus
+                      color: '#333333',
                       border: 'none',
                       cursor: 'pointer',
-                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
+                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.2)',
                     }}
                   >
                     Hapus
