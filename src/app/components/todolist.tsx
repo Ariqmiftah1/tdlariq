@@ -146,7 +146,7 @@ export default function TodoList() {
         borderRadius: '20px',
         backgroundColor: '#f4f4f8', // Latar belakang terang
         color: '#333333', // Teks lebih gelap untuk kontras
-        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
+        boxShadow: 'inset 0 15px 30px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
@@ -197,7 +197,7 @@ export default function TodoList() {
             boxShadow: '0 5px 10px rgba(0, 0, 0, 0.1)',
           }}
         >
-          {tasks.length}
+          Total: {tasks.length}
         </span>
       </div>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
