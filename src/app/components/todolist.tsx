@@ -143,150 +143,156 @@ export default function TodoList() {
     }
   };
 
-  return (
-    <div
+return (
+  <div
+    style={{
+      maxWidth: '500px',
+      margin: '40px auto',
+      padding: '20px',
+      borderRadius: '10px',
+      background: 'linear-gradient(180deg, #011627, #023E8A)',
+      color: '#ffffff',
+      boxShadow: '0 8px 20px rgba(0, 0, 0, 0.9)',
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    }}
+  >
+    <h1
       style={{
-        maxWidth: '500px',
-        margin: '40px auto',
-        padding: '20px',
-        borderRadius: '10px',
-        backgroundColor: '#1f1f2e', // Warna gelap elegan
-        color: '#ffffff',
-        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.5)', // Shadow untuk kesan futuristik
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        textAlign: 'center',
+        fontSize: '2.5rem',
+        fontWeight: 'bold',
+        marginBottom: '20px',
+        color: '#00B4D8',
       }}
     >
-      <h1
-        style={{
-          textAlign: 'center',
-          fontSize: '2.5rem',
-          fontWeight: 'bold',
-          marginBottom: '20px',
-          color: '#8e97f2', // Aksen biru lembut
-        }}
-      >
-        TO DO LIST
-      </h1>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginBottom: '20px',
-        }}
-      >
-        <button
-          onClick={addTask}
-          style={{
-            padding: '12px 24px',
-            borderRadius: '5px', // Tombol berbentuk kotak
-            background: 'linear-gradient(145deg, #3a3f47, #4b5059)',
-            color: '#ffffff',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            border: 'none',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.4)',
-            transition: 'transform 0.2s',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-        >
-          TAMBAH TUGAS
-        </button>
-      </div>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-        <AnimatePresence>
-          {tasks.map((task) => {
-            const timeLeft = calculateTimeRemaining(task.deadline);
-            const isExpired = timeLeft === 'Waktu habis!';
-            const taskColor = isExpired
-              ? '#ff4c4c' // Merah untuk tugas yang habis waktu
-              : task.completed
-              ? '#2e3a46' // Hijau gelap untuk tugas selesai
-              : '#4b5d67'; // Abu-abu gelap untuk tugas aktif
+      TO DO LIST
+    </h1>
 
-            return (
-              <motion.li
-                key={task.id}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
+    {/* Elemen untuk menampilkan jumlah tugas */}
+    <div style={{ textAlign: 'center', marginBottom: '20px', color: '#00B4D8' }}>
+      Jumlah Tugas: {tasks.length} {/* Menampilkan jumlah tugas */}
+    </div>
+
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: '20px',
+      }}
+    >
+      <button
+        onClick={addTask}
+        style={{
+          padding: '12px 24px',
+          borderRadius: '10px',
+          background: 'linear-gradient(90deg, #00B4D8, #023E8A)',
+          color: '#ffffff',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          border: 'none',
+          boxShadow: '0 0 10px #00B4D8, 0 0 40px #00B4D8',
+          transition: 'transform 0.2s',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+      >
+        TAMBAH TUGAS
+      </button>
+    </div>
+
+    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+      <AnimatePresence>
+        {tasks.map((task) => {
+          const timeLeft = calculateTimeRemaining(task.deadline);
+          const isExpired = timeLeft === 'Waktu habis!';
+          const taskColor = isExpired
+            ? '#ff4c4c'
+            : task.completed
+            ? '#2e3a46'
+            : '#4b5d67';
+
+          return (
+            <motion.li
+              key={task.id}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                backgroundColor: taskColor,
+                borderRadius: '10px',
+                padding: '20px',
+                marginBottom: '15px',
+                color: '#ffffff',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+              }}
+            >
+              <div
                 style={{
-                  backgroundColor: taskColor,
-                  borderRadius: '10px',
-                  padding: '20px',
-                  marginBottom: '15px',
-                  color: '#ffffff',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
               >
-                <div
+                <span
+                  onClick={() => toggleTask(task.id)}
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
+                    flex: 1,
+                    fontSize: '1rem',
+                    fontWeight: '500',
+                    color: task.completed ? '#aaaaaa' : '#ffffff',
+                    textDecoration: task.completed ? 'line-through' : 'none',
+                    cursor: 'pointer',
+                    marginRight: '10px',
                   }}
                 >
-                  <span
-                    onClick={() => toggleTask(task.id)}
-                    style={{
-                      flex: 1,
-                      fontSize: '1rem',
-                      fontWeight: '500',
-                      color: task.completed ? '#aaaaaa' : '#ffffff',
-                      textDecoration: task.completed ? 'line-through' : 'none',
-                      cursor: 'pointer',
-                      marginRight: '10px',
-                    }}
-                  >
-                    {task.text}
-                  </span>
-                  <button
-                    onClick={() => editTask(task.id, task.text, task.deadline)}
-                    style={{
-                      padding: '10px',
-                      borderRadius: '5px', // Tombol kotak
-                      background: 'linear-gradient(145deg, #6c7983, #3a3f47)',
-                      color: '#ffffff',
-                      border: 'none',
-                      cursor: 'pointer',
-                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
-                    }}
-                  >
-                    EDIT
-                  </button>
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    style={{
-                      padding: '10px',
-                      borderRadius: '5px', // Tombol kotak
-                      background: 'linear-gradient(145deg, #f25f5c, #d64045)',
-                      color: '#ffffff',
-                      border: 'none',
-                      cursor: 'pointer',
-                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
-                    }}
-                  >
-                    HAPUS
-                  </button>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: '#aaaaaa' }}>
-                  Deadline: {new Date(task.deadline).toLocaleString()}
-                </p>
-                <p
+                  {task.text}
+                </span>
+                <button
+                  onClick={() => editTask(task.id, task.text, task.deadline)}
                   style={{
-                    fontSize: '0.8rem',
-                    fontWeight: 'bold',
-                    color: isExpired ? '#ffcccc' : '#8e97f2',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    background: 'linear-gradient(145deg, #6c7983, #3a3f47)',
+                    color: '#ffffff',
+                    border: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                   }}
                 >
-                  ⏳ {timeRemaining[task.id] || 'Menghitung...'}
-                </p>
-              </motion.li>
-            );
-          })}
-        </AnimatePresence>
-      </ul>
-    </div>
-  );
-}
+                  EDIT
+                </button>
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  style={{
+                    padding: '10px',
+                    borderRadius: '5px',
+                    background: 'linear-gradient(145deg, #f25f5c, #d64045)',
+                    color: '#ffffff',
+                    border: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
+                  }}
+                >
+                  HAPUS
+                </button>
+              </div>
+              <p style={{ fontSize: '0.9rem', color: '#aaaaaa' }}>
+                Deadline: {new Date(task.deadline).toLocaleString()}
+              </p>
+              <p
+                style={{
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold',
+                  color: isExpired ? '#ffcccc' : '#8e97f2',
+                }}
+              >
+                ⏳ {timeRemaining[task.id] || 'Menghitung...'}
+              </p>
+            </motion.li>
+          );
+        })}
+      </AnimatePresence>
+    </ul>
+  </div>
+);
