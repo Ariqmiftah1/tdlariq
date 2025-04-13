@@ -159,7 +159,7 @@ export default function TodoList() {
           color: '#8e97f2',
         }}
       >
-        🚀 Futuristic TO DO LIST
+        To-Do List (⁠⁠╹⁠▽⁠╹⁠⁠)
       </h1>
       <div
         style={{
@@ -173,7 +173,7 @@ export default function TodoList() {
           onClick={addTask}
           style={{
             padding: '12px 24px',
-            borderRadius: '5px', // Persegi
+            borderRadius: '3px', // Persegi
             background: 'linear-gradient(145deg, #4b5d67, #6c7983)',
             color: '#ffffff',
             fontWeight: 'bold',
@@ -185,19 +185,19 @@ export default function TodoList() {
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          Tambah Tugas
+         + Tambah Tugas
         </button>
         <span
           style={{
             padding: '10px',
-            borderRadius: '5px', // Persegi
+            borderRadius: '3px', // Persegi
             background: '#6c7983',
             color: '#ffffff',
             fontWeight: 'bold',
             boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)',
           }}
         >
-          Total Tugas: {tasks.length}
+          {tasks.length}
         </span>
       </div>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
@@ -266,8 +266,8 @@ export default function TodoList() {
                   <button
                     onClick={() => editTask(task.id, task.text, task.deadline)}
                     style={{
-                      padding: '10px',
-                      borderRadius: '5px', // Persegi
+                      padding: '5px',
+                      borderRadius: '3px', // Persegi
                       background: 'linear-gradient(145deg, #8e97f2, #6c7983)',
                       color: '#ffffff',
                       border: 'none',
@@ -275,13 +275,13 @@ export default function TodoList() {
                       boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                     }}
                   >
-                    ✏️
+                    Edit
                   </button>
                   <button
                     onClick={() => deleteTask(task.id)}
                     style={{
-                      padding: '10px',
-                      borderRadius: '5px', // Persegi
+                      padding: '5px',
+                      borderRadius: '3px', // Persegi
                       background: 'linear-gradient(145deg, #f25f5c, #d64045)',
                       color: '#ffffff',
                       border: 'none',
@@ -289,7 +289,7 @@ export default function TodoList() {
                       boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                     }}
                   >
-                    🗑️
+                    Hapus
                   </button>
                 </div>
               </motion.li>
