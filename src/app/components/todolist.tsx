@@ -73,8 +73,8 @@ export default function TodoList() {
       showCancelButton: true,
       confirmButtonText: 'Tambah',
       cancelButtonText: 'Batal',
-      confirmButtonColor: '#4caf50',
-      cancelButtonColor: '#f44336',
+      confirmButtonColor: '#c5e1a5',
+      cancelButtonColor: '#ef9a9a',
       preConfirm: () => {
         return [
           (document.getElementById('swal-input1') as HTMLInputElement)?.value,
@@ -120,8 +120,8 @@ export default function TodoList() {
       showCancelButton: true,
       confirmButtonText: 'Simpan',
       cancelButtonText: 'Batal',
-      confirmButtonColor: '#4caf50',
-      cancelButtonColor: '#f44336',
+      confirmButtonColor: '#c5e1a5',
+      cancelButtonColor: '#ef9a9a',
       preConfirm: () => {
         return [
           (document.getElementById('swal-input1') as HTMLInputElement)?.value,
