@@ -159,13 +159,13 @@ export default function TodoList() {
           color: '#8e97f2',
         }}
       >
-        🚀 Futuristic TO DO LIST
+        TO DO LIST ^⁠⁠⁠⁠⁠⁠⁠⁠⁠_⁠^
       </h1>
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'left',
           marginBottom: '20px',
         }}
       >
@@ -185,7 +185,7 @@ export default function TodoList() {
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          Tambah Tugas
+          + Tambah Tugas
         </button>
         <span
           style={{
@@ -197,7 +197,7 @@ export default function TodoList() {
             boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)',
           }}
         >
-          Total Tugas: {tasks.length}
+          Total: {tasks.length}
         </span>
       </div>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
@@ -275,7 +275,7 @@ export default function TodoList() {
                       boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                     }}
                   >
-                    ✏️
+                    Edit
                   </button>
                   <button
                     onClick={() => deleteTask(task.id)}
@@ -289,7 +289,7 @@ export default function TodoList() {
                       boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                     }}
                   >
-                    🗑️
+                    Hapus
                   </button>
                 </div>
               </motion.li>
