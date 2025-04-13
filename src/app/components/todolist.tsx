@@ -146,7 +146,7 @@ export default function TodoList() {
         borderRadius: '20px',
         backgroundColor: '#1e1e2f',
         color: '#ffffff',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.5)', // Shadow untuk kesan jatuh
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
@@ -173,7 +173,7 @@ export default function TodoList() {
           onClick={addTask}
           style={{
             padding: '12px 24px',
-            borderRadius: '10px',
+            borderRadius: '5px', // Persegi
             background: 'linear-gradient(145deg, #4b5d67, #6c7983)',
             color: '#ffffff',
             fontWeight: 'bold',
@@ -190,7 +190,7 @@ export default function TodoList() {
         <span
           style={{
             padding: '10px',
-            borderRadius: '10px',
+            borderRadius: '5px', // Persegi
             background: '#6c7983',
             color: '#ffffff',
             fontWeight: 'bold',
@@ -206,9 +206,9 @@ export default function TodoList() {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
             const taskColor = task.completed
-              ? '#2e3a46'
+              ? '#2d6a4f' // Hijau gelap untuk tugas selesai
               : isExpired
-              ? '#4b5d67'
+              ? '#9d0208' // Merah gelap untuk tugas melebihi deadline
               : '#6c7983';
 
             return (
@@ -224,7 +224,7 @@ export default function TodoList() {
                   padding: '20px',
                   marginBottom: '15px',
                   color: '#ffffff',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)', // Shadow untuk kesan jatuh
                 }}
               >
                 <div
@@ -267,7 +267,7 @@ export default function TodoList() {
                     onClick={() => editTask(task.id, task.text, task.deadline)}
                     style={{
                       padding: '10px',
-                      borderRadius: '50%',
+                      borderRadius: '5px', // Persegi
                       background: 'linear-gradient(145deg, #8e97f2, #6c7983)',
                       color: '#ffffff',
                       border: 'none',
@@ -281,7 +281,7 @@ export default function TodoList() {
                     onClick={() => deleteTask(task.id)}
                     style={{
                       padding: '10px',
-                      borderRadius: '50%',
+                      borderRadius: '5px', // Persegi
                       background: 'linear-gradient(145deg, #f25f5c, #d64045)',
                       color: '#ffffff',
                       border: 'none',
