@@ -146,7 +146,7 @@ export default function TodoList() {
         borderRadius: '20px',
         backgroundColor: '#1e1e2f',
         color: '#ffffff',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.8)', // Shadow ditambahkan
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
@@ -159,57 +159,18 @@ export default function TodoList() {
           color: '#8e97f2',
         }}
       >
-        TO DO LIST ^⁠⁠⁠⁠⁠⁠⁠⁠⁠_⁠^
+        To-Do List (⁠⁠╹⁠▽⁠╹⁠⁠)
       </h1>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'left',
-          marginBottom: '20px',
-        }}
-      >
-        <button
-          onClick={addTask}
-          style={{
-            padding: '12px 24px',
-            borderRadius: '10px',
-            background: 'linear-gradient(145deg, #4b5d67, #6c7983)',
-            color: '#ffffff',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            border: 'none',
-            boxShadow: '0 8px 15px rgba(0, 0, 0, 0.5)',
-            transition: 'transform 0.2s',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-        >
-          + Tambah Tugas
-        </button>
-        <span
-          style={{
-            padding: '10px',
-            borderRadius: '10px',
-            background: '#6c7983',
-            color: '#ffffff',
-            fontWeight: 'bold',
-            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)',
-          }}
-        >
-          Total: {tasks.length}
-        </span>
-      </div>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         <AnimatePresence>
           {tasks.map((task) => {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
             const taskColor = task.completed
-              ? '#2e3a46'
+              ? '#2e3a46' // Hijau gelap
               : isExpired
-              ? '#4b5d67'
-              : '#6c7983';
+              ? '#3a1e1e' // Merah gelap
+              : '#6c7983'; // Standar
 
             return (
               <motion.li
@@ -267,7 +228,7 @@ export default function TodoList() {
                     onClick={() => editTask(task.id, task.text, task.deadline)}
                     style={{
                       padding: '10px',
-                      borderRadius: '50%',
+                      borderRadius: '5px', // Persegi
                       background: 'linear-gradient(145deg, #8e97f2, #6c7983)',
                       color: '#ffffff',
                       border: 'none',
@@ -281,7 +242,7 @@ export default function TodoList() {
                     onClick={() => deleteTask(task.id)}
                     style={{
                       padding: '10px',
-                      borderRadius: '50%',
+                      borderRadius: '5px', // Persegi
                       background: 'linear-gradient(145deg, #f25f5c, #d64045)',
                       color: '#ffffff',
                       border: 'none',
