@@ -149,10 +149,10 @@ export default function TodoList() {
         maxWidth: '500px',
         margin: '40px auto',
         padding: '20px',
-        borderRadius: '20px',
+        borderRadius: '10px',
         backgroundColor: '#1f1f2e', // Warna gelap elegan
         color: '#ffffff',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)', // Shadow untuk kesan futuristik
+        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.5)', // Shadow untuk kesan futuristik
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
@@ -165,7 +165,7 @@ export default function TodoList() {
           color: '#8e97f2', // Aksen biru lembut
         }}
       >
-        🚀 Futuristic TO DO LIST
+        TO DO LIST
       </h1>
       <div
         style={{
@@ -178,19 +178,19 @@ export default function TodoList() {
           onClick={addTask}
           style={{
             padding: '12px 24px',
-            borderRadius: '30px',
-            background: 'linear-gradient(145deg, #4b5d67, #6c7983)',
+            borderRadius: '5px', // Tombol berbentuk kotak
+            background: 'linear-gradient(145deg, #3a3f47, #4b5059)',
             color: '#ffffff',
             fontWeight: 'bold',
             cursor: 'pointer',
             border: 'none',
-            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.5)',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.4)',
             transition: 'transform 0.2s',
           }}
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          Tambah Tugas
+          TAMBAH TUGAS
         </button>
       </div>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
@@ -198,11 +198,11 @@ export default function TodoList() {
           {tasks.map((task) => {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
-            const taskColor = task.completed
-              ? '#2e3a46'
-              : isExpired
-              ? '#4b5d67'
-              : '#6c7983';
+            const taskColor = isExpired
+              ? '#ff4c4c' // Merah untuk tugas yang habis waktu
+              : task.completed
+              ? '#2e3a46' // Hijau gelap untuk tugas selesai
+              : '#4b5d67'; // Abu-abu gelap untuk tugas aktif
 
             return (
               <motion.li
@@ -213,7 +213,7 @@ export default function TodoList() {
                 transition={{ duration: 0.3 }}
                 style={{
                   backgroundColor: taskColor,
-                  borderRadius: '15px',
+                  borderRadius: '10px',
                   padding: '20px',
                   marginBottom: '15px',
                   color: '#ffffff',
@@ -245,21 +245,21 @@ export default function TodoList() {
                     onClick={() => editTask(task.id, task.text, task.deadline)}
                     style={{
                       padding: '10px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(145deg, #8e97f2, #6c7983)',
+                      borderRadius: '5px', // Tombol kotak
+                      background: 'linear-gradient(145deg, #6c7983, #3a3f47)',
                       color: '#ffffff',
                       border: 'none',
                       cursor: 'pointer',
                       boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                     }}
                   >
-                    ✏️
+                    EDIT
                   </button>
                   <button
                     onClick={() => deleteTask(task.id)}
                     style={{
                       padding: '10px',
-                      borderRadius: '50%',
+                      borderRadius: '5px', // Tombol kotak
                       background: 'linear-gradient(145deg, #f25f5c, #d64045)',
                       color: '#ffffff',
                       border: 'none',
@@ -267,7 +267,7 @@ export default function TodoList() {
                       boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                     }}
                   >
-                    🗑️
+                    HAPUS
                   </button>
                 </div>
                 <p style={{ fontSize: '0.9rem', color: '#aaaaaa' }}>
@@ -277,7 +277,7 @@ export default function TodoList() {
                   style={{
                     fontSize: '0.8rem',
                     fontWeight: 'bold',
-                    color: '#8e97f2',
+                    color: isExpired ? '#ffcccc' : '#8e97f2',
                   }}
                 >
                   ⏳ {timeRemaining[task.id] || 'Menghitung...'}
