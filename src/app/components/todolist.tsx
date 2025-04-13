@@ -144,7 +144,7 @@ export default function TodoList() {
         margin: '40px auto',
         padding: '20px',
         borderRadius: '20px',
-        backgroundColor: '#1e1e2f', // Gelap futuristik
+        backgroundColor: '#1e1e2f',
         color: '#ffffff',
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
@@ -156,7 +156,7 @@ export default function TodoList() {
           fontSize: '2.5rem',
           fontWeight: 'bold',
           marginBottom: '20px',
-          color: '#8e97f2', // Warna futuristik lembut
+          color: '#8e97f2',
         }}
       >
         🚀 Futuristic TO DO LIST
@@ -164,7 +164,8 @@ export default function TodoList() {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           marginBottom: '20px',
         }}
       >
@@ -172,13 +173,13 @@ export default function TodoList() {
           onClick={addTask}
           style={{
             padding: '12px 24px',
-            borderRadius: '30px',
+            borderRadius: '10px',
             background: 'linear-gradient(145deg, #4b5d67, #6c7983)',
             color: '#ffffff',
             fontWeight: 'bold',
             cursor: 'pointer',
             border: 'none',
-            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.5)',
+            boxShadow: '0 8px 15px rgba(0, 0, 0, 0.5)',
             transition: 'transform 0.2s',
           }}
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
@@ -186,6 +187,18 @@ export default function TodoList() {
         >
           Tambah Tugas
         </button>
+        <span
+          style={{
+            padding: '10px',
+            borderRadius: '10px',
+            background: '#6c7983',
+            color: '#ffffff',
+            fontWeight: 'bold',
+            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)',
+          }}
+        >
+          Total Tugas: {tasks.length}
+        </span>
       </div>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         <AnimatePresence>
@@ -235,6 +248,21 @@ export default function TodoList() {
                   >
                     {task.text}
                   </span>
+                </div>
+                <p style={{ fontSize: '0.9rem', color: '#aaaaaa', display: 'flex', justifyContent: 'space-between' }}>
+                  <span>Deadline: {new Date(task.deadline).toLocaleString()}</span>
+                  <span style={{ color: '#8e97f2', fontWeight: 'bold' }}>
+                    ⏳ {timeRemaining[task.id] || 'Menghitung...'}
+                  </span>
+                </p>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    gap: '10px',
+                    marginTop: '10px',
+                  }}
+                >
                   <button
                     onClick={() => editTask(task.id, task.text, task.deadline)}
                     style={{
@@ -264,18 +292,6 @@ export default function TodoList() {
                     🗑️
                   </button>
                 </div>
-                <p style={{ fontSize: '0.9rem', color: '#aaaaaa' }}>
-                  Deadline: {new Date(task.deadline).toLocaleString()}
-                </p>
-                <p
-                  style={{
-                    fontSize: '0.8rem',
-                    fontWeight: 'bold',
-                    color: '#8e97f2',
-                  }}
-                >
-                  ⏳ {timeRemaining[task.id] || 'Menghitung...'}
-                </p>
               </motion.li>
             );
           })}
