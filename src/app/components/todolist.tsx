@@ -65,7 +65,7 @@ export default function TodoList() {
 
   const addTask = async (): Promise<void> => {
     const { value: formValues } = await Swal.fire({
-      title: '<span style="color: #333333; font-weight: bold;">Tambahkan Tugas Baru</span>',
+      title: '<span style="color: #333333; font-weight: bold;">Tambah Tugas Baru</span>',
       html: `
         <div style="display: flex; flex-direction: column; gap: 15px; background-color: #f4f4f8; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
           <input id="swal-input1" class="swal2-input" placeholder="Nama tugas" style="padding: 12px; font-size: 1rem; border: 1px solid #ddd; border-radius: 5px; background: #ffffff; color: #333333;"/>
@@ -75,9 +75,9 @@ export default function TodoList() {
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: '<span style="font-weight: bold;">Tambah</span>',
-      confirmButtonColor: '#4caf50', // Hijau untuk tombol konfirmasi
+      confirmButtonColor: '#c5e1a5', // Hijau untuk tombol konfirmasi
       cancelButtonText: '<span style="font-weight: bold;">Batal</span>',
-      cancelButtonColor: '#9e9e9e', // Abu-abu untuk tombol batal
+      cancelButtonColor: 'ef9a9a', // Merah untuk tombol batal
       customClass: {
         popup: 'swal-custom-popup',
       },
@@ -112,9 +112,9 @@ export default function TodoList() {
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: '<span style="font-weight: bold;">Simpan</span>',
-      confirmButtonColor: '#6c63ff', // Biru untuk tombol konfirmasi
+      confirmButtonColor: '#c5e1a5', // Hijau untuk tombol konfirmasi
       cancelButtonText: '<span style="font-weight: bold;">Batal</span>',
-      cancelButtonColor: '#9e9e9e', // Abu-abu untuk tombol batal
+      cancelButtonColor: '#ef9a9a', // Merah
       customClass: {
         popup: 'swal-custom-popup',
       },
@@ -207,7 +207,7 @@ export default function TodoList() {
           style={{
             padding: '12px 24px',
             borderRadius: '5px',
-            background: 'linear-gradient(145deg, #d9e4ff, #a3b9ff)', // Warna tombol terang
+            background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)', // Hijau terang
             color: '#333333', // Warna teks gelap untuk kontras
             fontWeight: 'bold',
             cursor: 'pointer',
@@ -301,7 +301,7 @@ export default function TodoList() {
                     style={{
                       padding: '10px',
                       borderRadius: '5px',
-                      background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)', // Hijau terang untuk edit
+                      background: 'linear-gradient(145deg, #d9e4ff, #a3b9ff)', // Warna tombol terang
                       color: '#333333',
                       border: 'none',
                       cursor: 'pointer',
