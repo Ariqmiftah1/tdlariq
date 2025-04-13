@@ -73,8 +73,8 @@ export default function TodoList() {
       showCancelButton: true,
       confirmButtonText: 'Tambah',
       cancelButtonText: 'Batal',
-      confirmButtonColor: '#c5e1a5',
-      cancelButtonColor: '#ef9a9a',
+      confirmButtonColor: '#4caf50', // Hijau
+      cancelButtonColor: '#f44336', // Merah
       preConfirm: () => {
         return [
           (document.getElementById('swal-input1') as HTMLInputElement)?.value,
@@ -91,6 +91,14 @@ export default function TodoList() {
       };
       const docRef = await addDoc(collection(db, 'tasks'), newTask);
       setTasks([...tasks, { id: docRef.id, ...newTask }]);
+
+      // Notifikasi berhasil
+      await Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: 'Tugas berhasil ditambahkan!',
+        confirmButtonColor: '#4caf50',
+      });
     }
   };
 
@@ -108,6 +116,14 @@ export default function TodoList() {
   const deleteTask = async (id: string): Promise<void> => {
     await deleteDoc(doc(db, 'tasks', id));
     setTasks(tasks.filter((task) => task.id !== id));
+
+    // Notifikasi berhasil
+    await Swal.fire({
+      icon: 'success',
+      title: 'Berhasil',
+      text: 'Tugas berhasil dihapus!',
+      confirmButtonColor: '#4caf50',
+    });
   };
 
   const editTask = async (id: string, currentText: string, currentDeadline: string): Promise<void> => {
@@ -120,8 +136,8 @@ export default function TodoList() {
       showCancelButton: true,
       confirmButtonText: 'Simpan',
       cancelButtonText: 'Batal',
-      confirmButtonColor: '#c5e1a5',
-      cancelButtonColor: '#ef9a9a',
+      confirmButtonColor: '#4caf50', // Hijau
+      cancelButtonColor: '#f44336', // Merah
       preConfirm: () => {
         return [
           (document.getElementById('swal-input1') as HTMLInputElement)?.value,
@@ -138,6 +154,14 @@ export default function TodoList() {
 
       const taskRef = doc(db, 'tasks', id);
       await updateDoc(taskRef, { text: formValues[0], deadline: formValues[1] });
+
+      // Notifikasi berhasil
+      await Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: 'Tugas berhasil diperbarui!',
+        confirmButtonColor: '#4caf50',
+      });
     }
   };
 
