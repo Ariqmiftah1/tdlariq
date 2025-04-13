@@ -66,21 +66,18 @@ export default function TodoList() {
   const addTask = async (): Promise<void> => {
     const { value: formValues } = await Swal.fire({
       title: 'Tambahkan tugas baru',
-      html: `
-        <input id="swal-input1" class="swal2-input" placeholder="Nama tugas">
-        <input id="swal-input2" type="datetime-local" class="swal2-input">
-      `,
+      html:
+        '<input id="swal-input1" class="swal2-input" placeholder="Nama tugas">' +
+        '<input id="swal-input2" type="datetime-local" class="swal2-input">',
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Tambah',
       cancelButtonText: 'Batal',
       preConfirm: () => {
-        const text = (document.getElementById('swal-input1') as HTMLInputElement)?.value.trim();
-        const deadline = (document.getElementById('swal-input2') as HTMLInputElement)?.value.trim();
-        if (!text || !deadline) {
-          Swal.showValidationMessage('Harap isi semua bidang!');
-        }
-        return [text, deadline];
+        return [
+          (document.getElementById('swal-input1') as HTMLInputElement)?.value,
+          (document.getElementById('swal-input2') as HTMLInputElement)?.value,
+        ];
       },
     });
 
@@ -114,21 +111,18 @@ export default function TodoList() {
   const editTask = async (id: string, currentText: string, currentDeadline: string): Promise<void> => {
     const { value: formValues } = await Swal.fire({
       title: 'Edit Tugas',
-      html: `
-        <input id="swal-input1" class="swal2-input" value="${currentText}" placeholder="Nama tugas">
-        <input id="swal-input2" type="datetime-local" class="swal2-input" value="${new Date(currentDeadline).toISOString().slice(0, 16)}">
-      `,
+      html:
+        `<input id="swal-input1" class="swal2-input" value="${currentText}" placeholder="Nama tugas">` +
+        `<input id="swal-input2" type="datetime-local" class="swal2-input" value="${new Date(currentDeadline).toISOString().slice(0, 16)}">`,
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Simpan',
       cancelButtonText: 'Batal',
       preConfirm: () => {
-        const text = (document.getElementById('swal-input1') as HTMLInputElement)?.value.trim();
-        const deadline = (document.getElementById('swal-input2') as HTMLInputElement)?.value.trim();
-        if (!text || !deadline) {
-          Swal.showValidationMessage('Harap isi semua bidang!');
-        }
-        return [text, deadline];
+        return [
+          (document.getElementById('swal-input1') as HTMLInputElement)?.value,
+          (document.getElementById('swal-input2') as HTMLInputElement)?.value,
+        ];
       },
     });
 
@@ -149,43 +143,60 @@ export default function TodoList() {
         maxWidth: '500px',
         margin: '40px auto',
         padding: '20px',
-        borderRadius: '10px',
-        background: 'linear-gradient(180deg, #f8f8f8, #ffffff)', // Warna cerah
-        color: '#000000',
-        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
+        borderRadius: '20px',
+        backgroundColor: '#1e1e2f', // Gelap futuristik
+        color: '#ffffff',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        position: 'relative',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <h1
+        style={{
+          textAlign: 'center',
+          fontSize: '2.5rem',
+          fontWeight: 'bold',
+          marginBottom: '20px',
+          color: '#8e97f2', // Warna futuristik lembut
+        }}
+      >
+        🚀 Futuristic TO DO LIST
+      </h1>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '20px',
+        }}
+      >
         <button
           onClick={addTask}
           style={{
-            padding: '10px 20px',
-            borderRadius: '5px',
-            background: '#007BFF',
+            padding: '12px 24px',
+            borderRadius: '30px',
+            background: 'linear-gradient(145deg, #4b5d67, #6c7983)',
             color: '#ffffff',
             fontWeight: 'bold',
             cursor: 'pointer',
             border: 'none',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.5)',
+            transition: 'transform 0.2s',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          TAMBAH TUGAS
+          Tambah Tugas
         </button>
-        <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#555' }}>Jumlah Tugas: {tasks.length}</span>
       </div>
-
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         <AnimatePresence>
           {tasks.map((task) => {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
-            const taskColor = isExpired
-              ? '#f8d7da' // Merah lembut untuk waktu habis
-              : task.completed
-              ? '#d4edda' // Hijau lembut untuk selesai
-              : '#fff3cd'; // Kuning lembut untuk dalam hitungan waktu
+            const taskColor = task.completed
+              ? '#2e3a46'
+              : isExpired
+              ? '#4b5d67'
+              : '#6c7983';
 
             return (
               <motion.li
@@ -196,58 +207,75 @@ export default function TodoList() {
                 transition={{ duration: 0.3 }}
                 style={{
                   backgroundColor: taskColor,
-                  borderRadius: '10px',
-                  padding: '15px',
+                  borderRadius: '15px',
+                  padding: '20px',
                   marginBottom: '15px',
-                  color: '#333',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
                   <span
                     onClick={() => toggleTask(task.id)}
                     style={{
+                      flex: 1,
                       fontSize: '1rem',
                       fontWeight: '500',
-                      color: task.completed ? '#6c757d' : '#333',
+                      color: task.completed ? '#aaaaaa' : '#ffffff',
                       textDecoration: task.completed ? 'line-through' : 'none',
                       cursor: 'pointer',
+                      marginRight: '10px',
                     }}
                   >
                     {task.text}
                   </span>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: '#555', margin: '5px 0' }}>
-                  Deadline: {new Date(task.deadline).toLocaleString()} {isExpired && '(Waktu habis!)'}
-                </p>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
                   <button
                     onClick={() => editTask(task.id, task.text, task.deadline)}
                     style={{
-                      padding: '8px 12px',
-                      borderRadius: '5px',
-                      background: '#17a2b8',
+                      padding: '10px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(145deg, #8e97f2, #6c7983)',
                       color: '#ffffff',
                       border: 'none',
                       cursor: 'pointer',
+                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                     }}
                   >
-                    Edit
+                    ✏️
                   </button>
                   <button
                     onClick={() => deleteTask(task.id)}
                     style={{
-                      padding: '8px 12px',
-                      borderRadius: '5px',
-                      background: '#dc3545',
+                      padding: '10px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(145deg, #f25f5c, #d64045)',
                       color: '#ffffff',
                       border: 'none',
                       cursor: 'pointer',
+                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.4)',
                     }}
                   >
-                    Hapus
+                    🗑️
                   </button>
                 </div>
+                <p style={{ fontSize: '0.9rem', color: '#aaaaaa' }}>
+                  Deadline: {new Date(task.deadline).toLocaleString()}
+                </p>
+                <p
+                  style={{
+                    fontSize: '0.8rem',
+                    fontWeight: 'bold',
+                    color: '#8e97f2',
+                  }}
+                >
+                  ⏳ {timeRemaining[task.id] || 'Menghitung...'}
+                </p>
               </motion.li>
             );
           })}
