@@ -144,12 +144,30 @@ export default function TodoList() {
         margin: '40px auto',
         padding: '20px',
         borderRadius: '20px',
-        backgroundColor: '#f4f4f8', // Latar belakang terang
-        color: '#333333', // Teks lebih gelap untuk kontras
-        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
+        backgroundColor: isDarkMode ? '#333333' : '#f4f4f8', // Warna berdasarkan tema
+        color: isDarkMode ? '#ffffff' : '#333333', // Warna teks berdasarkan tema
+        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.2)',
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        position: 'relative',
       }}
     >
+      {/* Tombol Toggle Mode */}
+      <button
+        onClick={() => setIsDarkMode(!isDarkMode)}
+        style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          padding: '10px',
+          borderRadius: '50%',
+          backgroundColor: isDarkMode ? '#f4f4f8' : '#333333',
+          color: isDarkMode ? '#333333' : '#ffffff',
+          border: 'none',
+          cursor: 'pointer',
+        }}
+      >
+        {isDarkMode ? '☀️' : '🌙'}
+      </button>
       <h1
         style={{
           textAlign: 'center',
