@@ -24,7 +24,6 @@ export default function TodoList() {
   const [timeRemaining, setTimeRemaining] = useState<{ [key: string]: string }>(
     {}
   );
-  const [isDarkMode, setIsDarkMode] = useState(false); // Tambahkan state untuk tema gelap/terang
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -139,49 +138,29 @@ export default function TodoList() {
   };
 
   return (
-    <ThemeProvider>
-      <div
+    <div
+      style={{
+        maxWidth: '500px',
+        margin: '40px auto',
+        padding: '20px',
+        borderRadius: '20px',
+        backgroundColor: '#f4f4f8', // Latar belakang terang
+        color: '#333333', // Teks lebih gelap untuk kontras
+        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      }}
+    >
+      <h1
         style={{
-          maxWidth: '500px',
-          margin: '40px auto',
-          padding: '20px',
-          borderRadius: '20px',
-          backgroundColor: isDarkMode ? '#333333' : '#f4f4f8',
-          color: isDarkMode ? '#ffffff' : '#333333',
-          boxShadow: '0 15px 30px rgba(0, 0, 0, 0.2)',
-          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-          position: 'relative',
+          textAlign: 'center',
+          fontSize: '2.5rem',
+          fontWeight: 'bold',
+          marginBottom: '20px',
+          color: '#6c63ff', // Warna judul lembut
         }}
       >
-        {/* Tombol ganti mode */}
-        <button
-          onClick={toggleDarkMode}
-          style={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            padding: '10px',
-            borderRadius: '50%',
-            backgroundColor: isDarkMode ? '#f4f4f8' : '#333333',
-            color: isDarkMode ? '#333333' : '#ffffff',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          {isDarkMode ? '☀️' : '🌙'}
-        </button>
-
-        <h1
-          style={{
-            textAlign: 'center',
-            fontSize: '2.5rem',
-            fontWeight: 'bold',
-            marginBottom: '20px',
-            color: isDarkMode ? '#6c63ff' : '#6c63ff',
-          }}
-        >
-          To-Do List (⁠⁠╹⁠▽⁠╹⁠⁠)
-        </h1>
+        To-Do List (⁠⁠╹⁠▽⁠╹⁠⁠)
+      </h1>
       <div
         style={{
           display: 'flex',
@@ -195,8 +174,8 @@ export default function TodoList() {
           style={{
             padding: '12px 24px',
             borderRadius: '5px',
-            background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)',
-            color: '#333333',
+            background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)', // Hijau terang untuk edit
+            color: '#333333', // Warna teks gelap untuk kontras
             fontWeight: 'bold',
             cursor: 'pointer',
             border: 'none',
@@ -212,8 +191,8 @@ export default function TodoList() {
           style={{
             padding: '5px',
             borderRadius: '3px',
-            background: isDarkMode ? '#444444' : '#e6e6fa',
-            color: isDarkMode ? '#ffffff' : '#333333',
+            background: '#e6e6fa', // Latar belakang terang
+            color: '#333333', // Teks gelap
             fontWeight: 'bold',
             boxShadow: '0 5px 10px rgba(0, 0, 0, 0.1)',
           }}
@@ -227,10 +206,10 @@ export default function TodoList() {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
             const taskColor = task.completed
-              ? '#c8e6c9'
+              ? '#c8e6c9' // Hijau terang untuk tugas selesai
               : isExpired
-              ? '#ffcdd2'
-              : '#d1c4e9';
+              ? '#ffcdd2' // Merah terang untuk tugas melebihi deadline
+              : '#d1c4e9'; // Ungu terang untuk tugas dalam tenggat waktu
 
             return (
               <motion.li
@@ -244,8 +223,8 @@ export default function TodoList() {
                   borderRadius: '10px',
                   padding: '15px',
                   marginBottom: '15px',
-                  color: isDarkMode ? '#ffffff' : '#333333',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                  color: '#333333', // Teks gelap
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
                 }}
               >
                 <div
@@ -261,7 +240,7 @@ export default function TodoList() {
                       flex: 1,
                       fontSize: '1rem',
                       fontWeight: '500',
-                      color: task.completed ? '#555555' : isDarkMode ? '#ffffff' : '#333333',
+                      color: task.completed ? '#555555' : '#333333',
                       textDecoration: task.completed ? 'line-through' : 'none',
                       cursor: 'pointer',
                       marginRight: '10px',
@@ -289,7 +268,7 @@ export default function TodoList() {
                     style={{
                       padding: '10px',
                       borderRadius: '5px',
-                      background: isDarkMode ? '#4444ff' : 'linear-gradient(145deg, #d9e4ff, #a3b9ff)',
+                      background: 'linear-gradient(145deg, #d9e4ff, #a3b9ff)', // Warna tombol terang
                       color: '#333333',
                       border: 'none',
                       cursor: 'pointer',
@@ -303,7 +282,7 @@ export default function TodoList() {
                     style={{
                       padding: '10px',
                       borderRadius: '5px',
-                      background: isDarkMode ? '#ff4c4c' : 'linear-gradient(145deg, #ffebee, #ef9a9a)',
+                      background: 'linear-gradient(145deg, #ffebee, #ef9a9a)', // Merah terang untuk hapus
                       color: '#333333',
                       border: 'none',
                       cursor: 'pointer',
@@ -319,6 +298,5 @@ export default function TodoList() {
         </AnimatePresence>
       </ul>
     </div>
-</ThemeProvider>
   );
 }
