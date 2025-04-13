@@ -138,27 +138,61 @@ export default function TodoList() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl text-black font-bold mb-4 flex justify-center">TO DO LIST</h1>
-      <div className="flex justify-center mb-4">
+    <div
+      style={{
+        maxWidth: '600px',
+        margin: '40px auto',
+        padding: '20px',
+        borderRadius: '15px',
+        backgroundColor: '#f5f5f5',
+        boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
+        fontFamily: 'Arial, sans-serif',
+      }}
+    >
+      <h1
+        style={{
+          textAlign: 'center',
+          fontSize: '2rem',
+          fontWeight: 'bold',
+          color: '#333333',
+          marginBottom: '20px',
+        }}
+      >
+        ✨ Modern TO DO LIST
+      </h1>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '20px',
+        }}
+      >
         <button
           onClick={addTask}
-          className="bg-green-700 hover:bg-green-900 text-white px-4 py-2 rounded"
+          style={{
+            padding: '12px 24px',
+            borderRadius: '30px',
+            background: 'linear-gradient(145deg, #ff9a9e, #fad0c4)',
+            color: '#ffffff',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            border: 'none',
+            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)',
+          }}
         >
           Tambah Tugas
         </button>
       </div>
-      <ul>
+      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         <AnimatePresence>
           {tasks.map((task) => {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
             const taskColor = task.completed
-              ? 'bg-green-200'
+              ? '#c8e6c9'
               : isExpired
-              ? 'bg-red-200'
-              : 'bg-yellow-200';
-
+              ? '#ffcdd2'
+              : '#ffe0b2';
             return (
               <motion.li
                 key={task.id}
@@ -166,36 +200,69 @@ export default function TodoList() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className={`flex flex-col justify-between p-2 border-b rounded-lg ${taskColor}`}
+                style={{
+                  backgroundColor: taskColor,
+                  borderRadius: '10px',
+                  padding: '16px',
+                  marginBottom: '15px',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                }}
               >
-                <div className="flex justify-between items-center space-x-2">
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
                   <span
                     onClick={() => toggleTask(task.id)}
-                    className={`flex-1 cursor-pointer transition-500 ${
-                      task.completed
-                        ? 'line-through text-gray-500'
-                        : 'font-semibold text-gray-700'
-                    }`}
+                    style={{
+                      flex: 1,
+                      fontSize: '1rem',
+                      fontWeight: '500',
+                      color: task.completed ? '#aaaaaa' : '#333333',
+                      textDecoration: task.completed ? 'line-through' : 'none',
+                      cursor: 'pointer',
+                      marginRight: '10px',
+                    }}
                   >
                     {task.text}
                   </span>
                   <button
                     onClick={() => editTask(task.id, task.text, task.deadline)}
-                    className="text-white p-1 rounded bg-blue-600 hover:bg-blue-800"
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '50%',
+                      border: 'none',
+                      color: '#ffffff',
+                      cursor: 'pointer',
+                      background: 'linear-gradient(145deg, #64b5f6, #90caf9)',
+                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.2)',
+                      marginRight: '8px',
+                    }}
                   >
-                    Edit
+                    ✏️
                   </button>
                   <button
                     onClick={() => deleteTask(task.id)}
-                    className="text-white p-1 rounded bg-red-600 hover:bg-red-800"
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '50%',
+                      border: 'none',
+                      color: '#ffffff',
+                      cursor: 'pointer',
+                      background: 'linear-gradient(145deg, #e57373, #ef9a9a)',
+                      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.2)',
+                    }}
                   >
-                    Hapus
+                    🗑️
                   </button>
                 </div>
-                <p className="text-sm text-gray-700">
+                <p style={{ fontSize: '0.9rem', color: '#666666' }}>
                   Deadline: {new Date(task.deadline).toLocaleString()}
                 </p>
-                <p className="text-xs font-semibold text-gray-700">
+                <p style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#888888' }}>
                   ⏳ {timeRemaining[task.id] || 'Menghitung...'}
                 </p>
               </motion.li>
