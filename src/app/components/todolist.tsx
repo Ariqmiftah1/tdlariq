@@ -63,29 +63,6 @@ export default function TodoList() {
     return `${hours}j ${minutes}m ${seconds}d`;
   };
 
-  const swalCustomStyles = {
-    popup: {
-      width: '300px',
-      padding: '10px',
-      position: 'fixed',
-      top: '20px',
-      right: '20px',
-      transform: 'none',
-      borderRadius: '8px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
-    },
-    title: {
-      fontSize: '16px',
-      marginBottom: '8px',
-    },
-    htmlContainer: {
-      fontSize: '14px',
-    },
-    actions: {
-      justifyContent: 'flex-end',
-    },
-  };
-
   const addTask = async (): Promise<void> => {
     const { value: formValues } = await Swal.fire({
       title: 'Tambahkan tugas baru',
@@ -96,7 +73,8 @@ export default function TodoList() {
       showCancelButton: true,
       confirmButtonText: 'Tambah',
       cancelButtonText: 'Batal',
-      customClass: swalCustomStyles,
+      confirmButtonColor: '#4caf50', // Hijau
+      cancelButtonColor: '#f44336', // Merah
       preConfirm: () => {
         return [
           (document.getElementById('swal-input1') as HTMLInputElement)?.value,
@@ -116,10 +94,13 @@ export default function TodoList() {
 
       // Notifikasi berhasil
       await Swal.fire({
+        toast: true,
+        position: 'top-end',
         icon: 'success',
-        title: 'Berhasil',
-        text: 'Tugas berhasil ditambahkan!',
-        customClass: swalCustomStyles,
+        title: 'Tugas berhasil ditambahkan!',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
       });
     }
   };
@@ -141,10 +122,13 @@ export default function TodoList() {
 
     // Notifikasi berhasil
     await Swal.fire({
+      toast: true,
+      position: 'top-end',
       icon: 'success',
-      title: 'Berhasil',
-      text: 'Tugas berhasil dihapus!',
-      customClass: swalCustomStyles,
+      title: 'Tugas berhasil ditambahkan!',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
     });
   };
 
@@ -158,7 +142,8 @@ export default function TodoList() {
       showCancelButton: true,
       confirmButtonText: 'Simpan',
       cancelButtonText: 'Batal',
-      customClass: swalCustomStyles,
+      confirmButtonColor: '#4caf50', // Hijau
+      cancelButtonColor: '#f44336', // Merah
       preConfirm: () => {
         return [
           (document.getElementById('swal-input1') as HTMLInputElement)?.value,
@@ -178,10 +163,13 @@ export default function TodoList() {
 
       // Notifikasi berhasil
       await Swal.fire({
+        toast: true,
+        position: 'top-end',
         icon: 'success',
-        title: 'Berhasil',
-        text: 'Tugas berhasil diperbarui!',
-        customClass: swalCustomStyles,
+        title: 'Tugas berhasil ditambahkan!',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
       });
     }
   };
@@ -193,9 +181,9 @@ export default function TodoList() {
         margin: '40px auto',
         padding: '20px',
         borderRadius: '20px',
-        backgroundColor: '#f4f4f8',
-        color: '#333333',
-        boxShadow: 'inset 0 13px 10px rgba(0, 0, 0, 0.4)',
+        backgroundColor: '#f4f4f8', // Latar belakang terang
+        color: '#333333', // Teks lebih gelap untuk kontras
+        boxShadow: 'inset 0 13px 10px rgba(0, 0, 0, 0.4)', // Shadow untuk kesan jatuh
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
@@ -205,7 +193,7 @@ export default function TodoList() {
           fontSize: '2.5rem',
           fontWeight: 'bold',
           marginBottom: '20px',
-          color: '#6c63ff',
+          color: '#6c63ff', // Warna judul lembut
         }}
       >
         To-Do List (⁠⁠╹⁠▽⁠╹⁠⁠)
@@ -223,8 +211,8 @@ export default function TodoList() {
           style={{
             padding: '12px 24px',
             borderRadius: '5px',
-            background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)',
-            color: '#333333',
+            background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)', // Hijau terang untuk edit
+            color: '#333333', // Warna teks gelap untuk kontras
             fontWeight: 'bold',
             cursor: 'pointer',
             border: 'none',
@@ -240,8 +228,8 @@ export default function TodoList() {
           style={{
             padding: '5px',
             borderRadius: '3px',
-            background: '#e6e6fa',
-            color: '#333333',
+            background: '#e6e6fa', // Latar belakang terang
+            color: '#333333', // Teks gelap
             fontWeight: 'bold',
             boxShadow: '0 5px 10px rgba(0, 0, 0, 0.1)',
           }}
@@ -255,10 +243,10 @@ export default function TodoList() {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
             const taskColor = task.completed
-              ? '#c8e6c9'
+              ? '#c8e6c9' // Hijau terang untuk tugas selesai
               : isExpired
-              ? '#ffcdd2'
-              : '#d1c4e9';
+              ? '#ffcdd2' // Merah terang untuk tugas melebihi deadline
+              : '#d1c4e9'; // Ungu terang untuk tugas dalam tenggat waktu
 
             return (
               <motion.li
@@ -272,6 +260,8 @@ export default function TodoList() {
                   borderRadius: '10px',
                   padding: '15px',
                   marginBottom: '15px',
+                  color: '#333333', // Teks gelap
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
                 }}
               >
                 <div
@@ -287,6 +277,7 @@ export default function TodoList() {
                       flex: 1,
                       fontSize: '1rem',
                       fontWeight: '500',
+                      color: task.completed ? '#555555' : '#333333',
                       textDecoration: task.completed ? 'line-through' : 'none',
                       cursor: 'pointer',
                       marginRight: '10px',
@@ -314,7 +305,7 @@ export default function TodoList() {
                     style={{
                       padding: '10px',
                       borderRadius: '5px',
-                      background: 'linear-gradient(145deg, #d9e4ff, #a3b9ff)',
+                      background: 'linear-gradient(145deg, #d9e4ff, #a3b9ff)', // Warna tombol terang
                       color: '#333333',
                       border: 'none',
                       cursor: 'pointer',
@@ -328,7 +319,7 @@ export default function TodoList() {
                     style={{
                       padding: '10px',
                       borderRadius: '5px',
-                      background: 'linear-gradient(145deg, #ffebee, #ef9a9a)',
+                      background: 'linear-gradient(145deg, #ffebee, #ef9a9a)', // Merah terang untuk hapus
                       color: '#333333',
                       border: 'none',
                       cursor: 'pointer',
