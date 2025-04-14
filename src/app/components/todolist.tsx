@@ -37,6 +37,7 @@ export default function TodoList() {
     fetchTasks();
   }, []);
 
+  //hitung sisa waktu dari setiap tugas
   useEffect(() => {
     const interval = setInterval(() => {
       const newTimeRemaining: { [key: string]: string } = {};
@@ -49,6 +50,7 @@ export default function TodoList() {
     return () => clearInterval(interval);
   }, [tasks]);
 
+  //fungsi bantu utk menghitung sisa waktu berdasarkan deadline
   const calculateTimeRemaining = (deadline: string): string => {
     const deadlineTime = new Date(deadline).getTime();
     const now = new Date().getTime();
@@ -63,6 +65,7 @@ export default function TodoList() {
     return `${hours}j ${minutes}m ${seconds}d`;
   };
 
+  //fungsi tambah tugas baru
   const addTask = async (): Promise<void> => {
     const { value: formValues } = await Swal.fire({
   title: 'Tambahkan tugas baru',
@@ -95,7 +98,7 @@ export default function TodoList() {
       const docRef = await addDoc(collection(db, 'tasks'), newTask);
       setTasks([...tasks, { id: docRef.id, ...newTask }]);
 
-      // Notifikasi berhasil
+      //notif berhasil
       await Swal.fire({
         toast: true,
         position: 'top-end',
@@ -108,6 +111,7 @@ export default function TodoList() {
     }
   };
 
+  //fungsi menandai tugas
   const toggleTask = async (id: string): Promise<void> => {
     const updatedTasks = tasks.map((task) =>
       task.id === id ? { ...task, completed: !task.completed } : task
@@ -119,11 +123,12 @@ export default function TodoList() {
     });
   };
 
+  //fungsi hapus tugas
   const deleteTask = async (id: string): Promise<void> => {
     await deleteDoc(doc(db, 'tasks', id));
     setTasks(tasks.filter((task) => task.id !== id));
 
-    // Notifikasi berhasil
+    //notif berhasil
     await Swal.fire({
       toast: true,
       position: 'top-end',
@@ -135,6 +140,7 @@ export default function TodoList() {
     });
   };
 
+  //fungsi edit
   const editTask = async (id: string, currentText: string, currentDeadline: string): Promise<void> => {
     const { value: formValues } = await Swal.fire({
       title: 'Edit Tugas',
@@ -147,6 +153,7 @@ export default function TodoList() {
       cancelButtonText: 'Batal',
       confirmButtonColor: '#4caf50',
       cancelButtonColor: '#f44336',
+      //form edit
       preConfirm: () => {
         const taskName = (document.getElementById('swal-input1') as HTMLInputElement)?.value;
         const deadline = (document.getElementById('swal-input2') as HTMLInputElement)?.value;
@@ -167,7 +174,7 @@ export default function TodoList() {
       const taskRef = doc(db, 'tasks', id);
       await updateDoc(taskRef, { text: formValues[0], deadline: formValues[1] });
 
-      // Notifikasi berhasil
+      //notif berhasil
       await Swal.fire({
         toast: true,
         position: 'top-end',
@@ -217,14 +224,15 @@ export default function TodoList() {
           style={{
             padding: '12px 24px',
             borderRadius: '5px',
-            background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)', // Hijau terang untuk edit
-            color: '#333333', // Warna teks gelap untuk kontras
+            background: 'linear-gradient(145deg, #f9fbe7, #c5e1a5)', //gradasi hijau
+            color: '#333333',
             fontWeight: 'bold',
             cursor: 'pointer',
             border: 'none',
             boxShadow: '0 8px 15px rgba(0, 0, 0, 0.2)',
             transition: 'transform 0.2s',
           }}
+          //animasi button
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
@@ -234,8 +242,8 @@ export default function TodoList() {
           style={{
             padding: '5px',
             borderRadius: '3px',
-            background: '#e6e6fa', // Latar belakang terang
-            color: '#333333', // Teks gelap
+            background: '#e6e6fa',
+            color: '#333333',
             fontWeight: 'bold',
             boxShadow: '0 5px 10px rgba(0, 0, 0, 0.1)',
           }}
@@ -249,10 +257,10 @@ export default function TodoList() {
             const timeLeft = calculateTimeRemaining(task.deadline);
             const isExpired = timeLeft === 'Waktu habis!';
             const taskColor = task.completed
-              ? '#c8e6c9' // Hijau terang untuk tugas selesai
+              ? '#c8e6c9' //hijau tugas selesai
               : isExpired
-              ? '#ffcdd2' // Merah terang untuk tugas melebihi deadline
-              : '#d1c4e9'; // Ungu terang untuk tugas dalam tenggat waktu
+              ? '#ffcdd2' //merah habis waktu
+              : '#d1c4e9'; //ungu dlm tenggat waktu
 
             return (
               <motion.li
@@ -266,8 +274,8 @@ export default function TodoList() {
                   borderRadius: '10px',
                   padding: '15px',
                   marginBottom: '15px',
-                  color: '#333333', // Teks gelap
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Shadow untuk kesan jatuh
+                  color: '#333333',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 }}
               >
                 <div
@@ -317,6 +325,9 @@ export default function TodoList() {
                       cursor: 'pointer',
                       boxShadow: '0 3px 6px rgba(0, 0, 0, 0.2)',
                     }}
+                    //animasi button
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                   >
                     Edit
                   </button>
@@ -331,6 +342,9 @@ export default function TodoList() {
                       cursor: 'pointer',
                       boxShadow: '0 3px 6px rgba(0, 0, 0, 0.2)',
                     }}
+                    //animasi button
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                   >
                     Hapus
                   </button>
