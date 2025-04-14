@@ -65,23 +65,26 @@ export default function TodoList() {
 
   const addTask = async (): Promise<void> => {
     const { value: formValues } = await Swal.fire({
-      title: 'Tambahkan tugas baru',
-      html:
-        '<input id="swal-input1" class="swal2-input" placeholder="Nama tugas">' +
-        '<input id="swal-input2" type="datetime-local" class="swal2-input">',
-      focusConfirm: false,
-      showCancelButton: true,
-      confirmButtonText: 'Tambah',
-      cancelButtonText: 'Batal',
-      confirmButtonColor: '#4caf50', // Hijau
-      cancelButtonColor: '#f44336', // Merah
-      preConfirm: () => {
-        return [
-          (document.getElementById('swal-input1') as HTMLInputElement)?.value,
-          (document.getElementById('swal-input2') as HTMLInputElement)?.value,
-        ];
-      },
-    });
+  title: 'Tambahkan tugas baru',
+  html:
+    '<input id="swal-input1" class="swal2-input" placeholder="Nama tugas">' +
+    '<input id="swal-input2" type="datetime-local" class="swal2-input">',
+  focusConfirm: false,
+  showCancelButton: true,
+  confirmButtonText: 'Tambah',
+  cancelButtonText: 'Batal',
+  confirmButtonColor: '#4caf50',
+  cancelButtonColor: '#f44336',
+  preConfirm: () => {
+    const taskName = (document.getElementById('swal-input1') as HTMLInputElement)?.value;
+    const deadline = (document.getElementById('swal-input2') as HTMLInputElement)?.value;
+    if (!taskName || !deadline) {
+      Swal.showValidationMessage('Semua kolom harus diisi!');
+      return;
+    }
+    return [taskName, deadline];
+  },
+});
 
     if (formValues && formValues[0] && formValues[1]) {
       const newTask: Omit<Task, 'id'> = {
@@ -125,7 +128,7 @@ export default function TodoList() {
       toast: true,
       position: 'top-end',
       icon: 'success',
-      title: 'Tugas berhasil ditambahkan!',
+      title: 'Tugas berhasil dihapus!',
       showConfirmButton: false,
       timer: 2000,
       timerProgressBar: true,
@@ -142,13 +145,16 @@ export default function TodoList() {
       showCancelButton: true,
       confirmButtonText: 'Simpan',
       cancelButtonText: 'Batal',
-      confirmButtonColor: '#4caf50', // Hijau
-      cancelButtonColor: '#f44336', // Merah
+      confirmButtonColor: '#4caf50',
+      cancelButtonColor: '#f44336',
       preConfirm: () => {
-        return [
-          (document.getElementById('swal-input1') as HTMLInputElement)?.value,
-          (document.getElementById('swal-input2') as HTMLInputElement)?.value,
-        ];
+        const taskName = (document.getElementById('swal-input1') as HTMLInputElement)?.value;
+        const deadline = (document.getElementById('swal-input2') as HTMLInputElement)?.value;
+        if (!taskName || !deadline) {
+          Swal.showValidationMessage('Semua kolom harus diisi!');
+          return;
+        }
+        return [taskName, deadline];
       },
     });
 
@@ -166,7 +172,7 @@ export default function TodoList() {
         toast: true,
         position: 'top-end',
         icon: 'success',
-        title: 'Tugas berhasil ditambahkan!',
+        title: 'Tugas berhasil diedit!',
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
